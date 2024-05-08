@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cookieSession({
-    name: "bezkoder-session",
+    name: "controller-session",
     keys: ["COOKIE_SECRET"], // should use as secret environment variable
     httpOnly: true,
     sameSite: 'strict'
@@ -41,12 +41,13 @@ db.sequelize.sync();
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+  res.json({ message: "Bem-vindo ao Sistema de Controle de Estoque!" });
 });
 
 // routes
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
+require("./app/routes/product.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

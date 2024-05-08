@@ -14,6 +14,7 @@ import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
+import Test from "./components/Test";
 
 import EventBus from "./common/EventBus";
 
@@ -49,7 +50,7 @@ const App: React.FC = () => {
     <div>
       <nav className="navbar navbar-expand navbar-dark bg-dark">
         <Link to={"/"} className="navbar-brand">
-          bezKoder
+          Controle
         </Link>
         <div className="navbar-nav mr-auto">
           <li className="nav-item">
@@ -90,6 +91,14 @@ const App: React.FC = () => {
                 {currentUser.username}
               </Link>
             </li>
+            {showAdminBoard && (
+            <li className="nav-item">
+              <Link to={"/register"} className="nav-link">
+                Sign Up
+              </Link>
+            </li>
+            )}
+
             <li className="nav-item">
               <a href="/login" className="nav-link" onClick={logOut}>
                 LogOut
@@ -101,12 +110,6 @@ const App: React.FC = () => {
             <li className="nav-item">
               <Link to={"/login"} className="nav-link">
                 Login
-              </Link>
-            </li>
-
-            <li className="nav-item">
-              <Link to={"/register"} className="nav-link">
-                Sign Up
               </Link>
             </li>
           </div>
@@ -123,6 +126,7 @@ const App: React.FC = () => {
           <Route path="/user" element={<BoardUser />} />
           <Route path="/mod" element={<BoardModerator />} />
           <Route path="/admin" element={<BoardAdmin />} />
+          <Route path="/test" element={<Test />} />
         </Routes>
       </div>
     </div>
