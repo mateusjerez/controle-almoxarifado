@@ -1,5 +1,7 @@
+const { authJwt } = require("../middleware");
 const verify = require("../middleware/verifyProduct");
 const controller = require("../controllers/product.controller");
+
 
 
 module.exports = function(app) {
@@ -11,6 +13,10 @@ module.exports = function(app) {
     next();
   });
 
-  app.post("/api/product/productin", verify.checkDuplicateName, controller.productin);
+  app.post(
+    "/api/product/productadd", 
+    [authJwt.verifyToken, authJwt.isModerator, verify.checkDuplicateName], 
+    controller.productadd
+  );
 
 };

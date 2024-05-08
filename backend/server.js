@@ -5,13 +5,6 @@ const cookieSession = require("cookie-session");
 const app = express();
 
 app.use(cors());
-/* for Angular Client (withCredentials) */
-// app.use(
-//   cors({
-//     credentials: true,
-//     origin: ["http://localhost:8081"],
-//   })
-// );
 
 // parse requests of content-type - application/json
 app.use(express.json());
@@ -31,12 +24,13 @@ app.use(
 // database
 const db = require("./app/models");
 const Role = db.role;
+const Unit = db.unit;
 
 db.sequelize.sync();
 // force: true will drop the table if it already exists
 // db.sequelize.sync({force: true}).then(() => {
-//   console.log('Drop and Resync Database with { force: true }');
-//   initial();
+// console.log('Drop and Resync Database with { force: true }');
+// initial();
 // });
 
 // simple route
@@ -70,4 +64,35 @@ function initial() {
     id: 3,
     name: "admin",
   });
+
+  Unit.create({
+    id: 1,
+    name: "quilo",
+    uom: "Kg",
+  })
+
+  Unit.create({
+    id: 2,
+    name: "litro",
+    uom: "L",
+  })
+
+  Unit.create({
+    id: 3,
+    name: "pacote",
+    uom: "Pc",
+  })
+
+  Unit.create({
+    id: 4,
+    name: "unidade",
+    uom: "Un",
+  })
+  
+  Unit.create({
+    id: 5,
+    name: "Caixa",
+    uom: "Cx",
+  })
+
 }

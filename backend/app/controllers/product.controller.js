@@ -6,7 +6,7 @@ const Unit = db.unit;
 const Op = db.Sequelize.Op;
 
 
-exports.productin = async (req, res) => {
+exports.productadd = async (req, res) => {
     try {
         const product = await Product.create({
             name: req.body.name,
