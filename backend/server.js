@@ -25,13 +25,14 @@ app.use(
 const db = require("./app/models");
 const Role = db.role;
 const Unit = db.unit;
+const Stand = db.stand;
 
 db.sequelize.sync();
-// force: true will drop the table if it already exists
+//force: true will drop the table if it already exists
 // db.sequelize.sync({force: true}).then(() => {
-// console.log('Drop and Resync Database with { force: true }');
-// initial();
-// });
+//  console.log('Drop and Resync Database with { force: true }');
+//  initial();
+//  });
 
 // simple route
 app.get("/", (req, res) => {
@@ -42,6 +43,7 @@ app.get("/", (req, res) => {
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
 require("./app/routes/product.routes")(app);
+require("./app/routes/transaction.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
@@ -91,8 +93,23 @@ function initial() {
   
   Unit.create({
     id: 5,
-    name: "Caixa",
+    name: "caixa",
     uom: "Cx",
+  })
+
+  Stand.create({
+    id: 1,
+    name: "barraca1",
+  })
+
+  Stand.create({
+    id: 2,
+    name: "barraca2",
+  })
+
+  Stand.create({
+    id: 3,
+    name: "barraca3",
   })
 
 }

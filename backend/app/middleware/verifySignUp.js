@@ -13,7 +13,7 @@ checkDuplicateUsernameOrEmail = async (req, res, next) => {
 
     if (user) {
       return res.status(400).send({
-        message: "Failed! Username is already in use!"
+        message: "Erro! Usuário já cadastrado!"
       });
     }
 

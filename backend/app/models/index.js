@@ -25,9 +25,10 @@ db.sequelize = sequelize;
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
 
-db.product = require("../models/product.model.js")(sequelize, Sequelize);
+db.product = require("./product.model.js")(sequelize, Sequelize);
 db.stand = require("./stand.model.js")(sequelize, Sequelize);
-db.unit = require("./unit.model.js")(sequelize,Sequelize);
+db.unit = require("./unit.model.js")(sequelize, Sequelize);
+db.transaction = require("./transaction.model.js")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles"
@@ -49,6 +50,10 @@ db.product.belongsToMany(db.unit, {
 db.unit.belongsToMany(db.product, {
   through: "product_unit"
 })
+
+db.user.hasMany(db.transaction);
+db.product.hasMany(db.transaction);
+db.stand.hasMany(db.transaction);
 
 db.ROLES = ["user", "admin", "moderator"];
 

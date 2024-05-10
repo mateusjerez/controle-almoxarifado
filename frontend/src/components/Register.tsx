@@ -19,7 +19,7 @@ const Register: React.FC = () => {
     username: Yup.string()
       .test(
         "len",
-        "The username must be between 3 and 20 characters.",
+        "O usuário deve ter no mínimo 3 caracteres!",
         (val: any) =>
           val &&
           val.toString().length >= 3 &&
@@ -29,7 +29,7 @@ const Register: React.FC = () => {
     password: Yup.string()
       .test(
         "len",
-        "The password must be between 6 and 40 characters.",
+        "A senha deve ter no mínimo 6 caracteres!",
         (val: any) =>
           val &&
           val.toString().length >= 6 &&
@@ -82,6 +82,8 @@ const Register: React.FC = () => {
   return (
     <div className="col-md-12">
       <div className="card card-container">
+      <h4>Cadastro de Usuário</h4>
+      <h4></h4>
         <img
           src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
           alt="profile-img"
@@ -96,7 +98,7 @@ const Register: React.FC = () => {
             {!successful && (
               <div>
                 <div className="form-group">
-                  <label htmlFor="username"> Username </label>
+                  <label htmlFor="username"> Nome do usuário </label>
                   <Field name="username" type="text" className="form-control" />
                   <ErrorMessage
                     name="username"
@@ -106,7 +108,7 @@ const Register: React.FC = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="password"> Password </label>
+                  <label htmlFor="password"> Senha </label>
                   <Field
                     name="password"
                     type="password"
@@ -121,15 +123,15 @@ const Register: React.FC = () => {
 
                 <div className="form-group">
                   <label htmlFor="role"> Perfil </label>
-                  <Field name="role" as="select">
-                      <option value="user">User</option>
-                      <option value="moderator">Moderate</option>
-                      <option value="admin">Admin</option>
+                  <Field name="role" as="select" className="form-control">
+                      <option value="user">Restrito</option>
+                      <option value="moderator">Moderado</option>
+                      <option value="admin">Administrador</option>
                   </Field>
                 </div>
 
                 <div className="form-group">
-                  <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
+                  <button type="submit" className="btn btn-primary btn-block">Cadastrar</button>
                 </div>
               </div>
             )}

@@ -1,5 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
     const Unit = sequelize.define("units", {
+
       name: {
         type: Sequelize.STRING
       },

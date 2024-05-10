@@ -3,8 +3,9 @@ module.exports = (sequelize, Sequelize) => {
       name: {
         type: Sequelize.STRING
       },
-      owner: {
-        type: Sequelize.STRING
+      stock: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0 
       }
     });
   
