@@ -9,6 +9,8 @@ export const addproduct = (name: string, stands: Array<String>, unit: string) =>
         stands,
         unit
     }, { headers: authHeader() })
-    
+}
 
+export const getList = () => {
+    return axios.get(API_URL + "list")
 }

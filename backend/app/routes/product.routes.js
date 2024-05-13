@@ -19,4 +19,6 @@ module.exports = function (app) {
     controller.productadd
   );
 
+  app.get("/api/product/list", controller.productlist)
+
 };

@@ -9,16 +9,16 @@ import IUser from "./types/user.type";
 
 import Login from "./components/Login";
 import Register from "./components/Register";
-import Home from "./components/Home";
+import Home from "./tools/ListProducts";
 import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
-import Test from "./components/Test";
-
+import ListProducts from "./tools/ListProducts";
 import AddProduct from "./tools/AddProduct";
 
 import EventBus from "./common/EventBus";
+
 
 const App: React.FC = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
@@ -134,7 +134,7 @@ const App: React.FC = () => {
             <Route path="/mod" element={<BoardModerator />} />
             <Route path="/admin" element={<BoardAdmin />} />
             <Route path="/addproduct" element={<AddProduct />} />
-            <Route path="/test" element={<Test />} />
+            <Route path="/listproduct" element={<ListProducts />} />
           </Routes>
         </div>
       </div>

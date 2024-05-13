@@ -7,7 +7,7 @@ import IProduct from "../types/product.type";
 
 import * as AuthService from "../services/auth.service";
 
-import { getModeratorBoard} from "../services/user.service";
+import { getModeratorBoard } from "../services/user.service";
 import EventBus from "../common/EventBus";
 
 const AddProduct: React.FC = () => {
@@ -17,12 +17,12 @@ const AddProduct: React.FC = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
-  
+
   const initialValues: IProduct = {
     name: "",
     stands: [],
     unit: "",
-  } 
+  };
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Preenchimento obrigatório!"),
@@ -36,10 +36,10 @@ const AddProduct: React.FC = () => {
     setLoading(true);
 
     addproduct(name, stands, unit).then(
-        (response) => {
-            setMessage(response.data.message);
-            setSuccessful(true);
-          },
+      (response) => {
+        setMessage(response.data.message);
+        setSuccessful(true);
+      },
       (error) => {
         const resMessage =
           (error.response &&
@@ -84,88 +84,119 @@ const AddProduct: React.FC = () => {
   return (
     <div className="card card-container">
       <header className="">
-        {showModeratorBoard ? 
-        <div>
+        {showModeratorBoard ? (
+          <div>
             <h3>Cadastro de Produto</h3>
 
             <div>
-                <Formik 
-                    initialValues={initialValues}
-                    validationSchema={validationSchema}
-                    onSubmit={handleProduct}
-                    >
-                    <Form>
-                        {!successful && (
-                            <div>
-                                <div className="form-group">
-                                    <label htmlFor="name">Nome do Produto</label>
-                                    <Field name="name" type="text" className="form-control" />
-                                    <ErrorMessage
-                                        name="name"
-                                        component="div"
-                                        className="alert alert-danger"
-                                    />
-                                </div>
+              <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={handleProduct}
+              >
+                <Form>
+                  {!successful && (
+                    <div>
+                      <div className="form-group">
+                        <label htmlFor="name">Nome do Produto</label>
+                        <Field
+                          name="name"
+                          type="text"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="name"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
 
-                                <div className="form-group">
-                                    <label htmlFor="stands">Barracas</label>
-                                    <label>
-                                    <Field name="stands" type="checkbox" value="barraca1" className="" /> Barraca 1
-                                    </label>
+                      <div className="form-group">
+                        <label htmlFor="stands">Barracas</label>
+                        <label>
+                          <Field
+                            name="stands"
+                            type="checkbox"
+                            value="barraca1"
+                            className=""
+                          />{" "}
+                          Barraca 1
+                        </label>
 
-                                    <label>
-                                    <Field name="stands" type="checkbox" value="barraca2" className="" /> Barraca 2
-                                    </label>
+                        <label>
+                          <Field
+                            name="stands"
+                            type="checkbox"
+                            value="barraca2"
+                            className=""
+                          />{" "}
+                          Barraca 2
+                        </label>
 
-                                    <label>
-                                    <Field name="stands" type="checkbox" value="barraca3" className="" /> Barraca 3
-                                    </label>
+                        <label>
+                          <Field
+                            name="stands"
+                            type="checkbox"
+                            value="barraca3"
+                            className=""
+                          />{" "}
+                          Barraca 3
+                        </label>
 
-                                    <ErrorMessage
-                                        name="stands"
-                                        component="div"
-                                        className="alert alert-danger"
-                                    />
-                                </div>
+                        <ErrorMessage
+                          name="stands"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
 
-                                <div className="form-group">
-                                    <label htmlFor="unit">Medida</label>
-                                    <Field name="unit" type="text" className="form-control" />
-                                    <ErrorMessage
-                                        name="unit"
-                                        component="div"
-                                        className="alert alert-danger"
-                                    />
-                                </div>
+                      <div className="form-group">
+                        <label htmlFor="unit">Medida</label>
+                        <Field
+                          name="unit"
+                          type="text"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="unit"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
 
-                                <div className="form-group">
-                                    <button type="submit" className="btn btn-primary btn-block" disabled={loading}>
-                                        <span>Cadastrar</span>
-                                    </button>
-                                </div>
-                            </div>
-                        )}
+                      <div className="form-group">
+                        <button
+                          type="submit"
+                          className="btn btn-primary btn-block"
+                          disabled={loading}
+                        >
+                          <span>Cadastrar</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
 
-                        {message && (
-                            <div className="form-group">
-                                <div
-                                className={
-                                    successful ? "alert alert-success" : "alert alert-danger"
-                                }
-                                role="alert"
-                                >
-                                {message}
-                                </div>
-                            </div>
-                        )}
-
-                    </Form>
-                </Formik>
-
+                  {message && (
+                    <div className="form-group">
+                      <div
+                        className={
+                          successful
+                            ? "alert alert-success"
+                            : "alert alert-danger"
+                        }
+                        role="alert"
+                      >
+                        {message}
+                      </div>
+                    </div>
+                  )}
+                </Form>
+              </Formik>
             </div>
-        </div> //-------------------------------//
-:
-        <h3>{content}</h3>}
+          </div> //-------------------------------//
+        ) : (
+          <h3>{content}</h3>
+        )}
       </header>
     </div>
   );
