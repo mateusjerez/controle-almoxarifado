@@ -10,12 +10,6 @@ exports.transaction = async (req, res, next) => {
         const trans_type = req.body.type;
         const trans_quantity = req.body.quantity;
 
-        const stand = await Stand.findOne({
-            where: {
-                name:req.body.stand
-            }
-        })
-
         const product = await Product.findOne({
             where: {
                 name:req.body.product
@@ -32,14 +26,13 @@ exports.transaction = async (req, res, next) => {
             type: trans_type,
             quantity: trans_quantity,
             userId: user.id,
-            standId: stand.id,
             productId: product.id            
         })
 
         next();
 
     } catch (error) {
-        res.status(500).send({ message: error.message });
+        res.status(500).send({ message: error.message + " Erro ao realizar transação! " + req.body.product + " " + req.body.user + " " + req.body.type + " " + req.body.quantity});
     }
 }
 

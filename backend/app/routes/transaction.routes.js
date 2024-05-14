@@ -14,7 +14,7 @@ module.exports = function (app) {
     });
 
     app.post(
-        "/api/transaction/transaction",
+        "/api/product/transactionin",
         [authJwt.verifyToken, authJwt.isModerator],
         controller.transaction, update.updateStock
     );

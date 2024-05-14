@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
 
 import * as AuthService from "../services/auth.service";
-import { getModeratorBoard } from "../services/user.service";
-import EventBus from "../common/EventBus";
 
 import { getList } from "../services/product.service";
 
 const ListProducts: React.FC = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
-  const [content, setContent] = useState<String>("");
-
+  
   const [producList, setProductList] = useState<any[]>([]);
 
   useEffect(() => {
@@ -18,26 +15,6 @@ const ListProducts: React.FC = () => {
     if (user) {
       setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
     }
-
-    getModeratorBoard().then(
-      (response) => {
-        setContent(response.data);
-      },
-      (error) => {
-        const _content =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-
-        setContent(_content);
-
-        if (error.response && error.response.status === 401) {
-          EventBus.dispatch("logout");
-        }
-      }
-    );
 
     const fetchProductList = async () => {
       try {
@@ -77,7 +54,7 @@ const ListProducts: React.FC = () => {
         </div>
       ) : (
         <div>
-          <h3>Faça o login para ter acesso ao sistema!</h3>
+          <h4>Faça o login para ter acesso ao sistema!</h4>
         </div>
       )}
     </div>

@@ -16,6 +16,7 @@ import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
 import ListProducts from "./tools/ListProducts";
 import AddProduct from "./tools/AddProduct";
+import TransactionIn from "./tools/TransactionIn";
 
 import EventBus from "./common/EventBus";
 
@@ -76,7 +77,7 @@ const App: React.FC = () => {
                       </li>
 
                       <li className="nav-item">
-                        <Link to={"/"} className="nav-link text-white">
+                        <Link to={"/transactionin"} className="nav-link text-white">
                           Entrada de Produtos
                         </Link>
                       </li>
@@ -135,6 +136,7 @@ const App: React.FC = () => {
             <Route path="/admin" element={<BoardAdmin />} />
             <Route path="/addproduct" element={<AddProduct />} />
             <Route path="/listproduct" element={<ListProducts />} />
+            <Route path="/transactionin" element={<TransactionIn />} />
           </Routes>
         </div>
       </div>

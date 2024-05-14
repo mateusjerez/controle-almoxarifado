@@ -1,9 +1,6 @@
 const db = require("../models");
 
 const Product = db.product;
-const Stand = db.stand;
-const User = db.user;
-const Transaction = db.transaction;
 
 exports.updateStock = async (req, res) => {
     try {

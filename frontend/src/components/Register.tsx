@@ -21,9 +21,7 @@ const Register: React.FC = () => {
         "len",
         "O usuário deve ter no mínimo 3 caracteres!",
         (val: any) =>
-          val &&
-          val.toString().length >= 3 &&
-          val.toString().length <= 20
+          val && val.toString().length >= 3 && val.toString().length <= 20
       )
       .required("This field is required!"),
     password: Yup.string()
@@ -31,18 +29,15 @@ const Register: React.FC = () => {
         "len",
         "A senha deve ter no mínimo 6 caracteres!",
         (val: any) =>
-          val &&
-          val.toString().length >= 6 &&
-          val.toString().length <= 40
+          val && val.toString().length >= 6 && val.toString().length <= 40
       )
       .required("This field is required!"),
   });
 
   const handleRegister = (formValue: IUser) => {
-    
-    const {username, password, role} = formValue;
+    const { username, password, role } = formValue;
     const roles = [];
-   // roles.push(role);
+    // roles.push(role);
 
     switch (role) {
       case "admin":
@@ -54,7 +49,7 @@ const Register: React.FC = () => {
         roles.push("moderator");
         roles.push("user");
         break;
-    
+
       default:
         roles.push("user");
         break;
@@ -82,8 +77,7 @@ const Register: React.FC = () => {
   return (
     <div className="col-md-12">
       <div className="card card-container">
-      <h4>Cadastro de Usuário</h4>
-      <h4></h4>
+        <h4>Cadastro de Usuário</h4>
         <img
           src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
           alt="profile-img"
@@ -124,14 +118,16 @@ const Register: React.FC = () => {
                 <div className="form-group">
                   <label htmlFor="role"> Perfil </label>
                   <Field name="role" as="select" className="form-control">
-                      <option value="user">Restrito</option>
-                      <option value="moderator">Moderado</option>
-                      <option value="admin">Administrador</option>
+                    <option value="user">Restrito</option>
+                    <option value="moderator">Moderado</option>
+                    <option value="admin">Administrador</option>
                   </Field>
                 </div>
 
                 <div className="form-group">
-                  <button type="submit" className="btn btn-primary btn-block">Cadastrar</button>
+                  <button type="submit" className="btn btn-primary btn-block">
+                    Cadastrar
+                  </button>
                 </div>
               </div>
             )}
