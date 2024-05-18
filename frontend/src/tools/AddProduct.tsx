@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-import { addproduct } from "../services/product.service";
+import { addproduct, getStandList } from "../services/product.service";
 import IProduct from "../types/product.type";
 
 import * as AuthService from "../services/auth.service";
@@ -17,6 +17,8 @@ const AddProduct: React.FC = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
+
+  const [standList, setStandList] = useState<any[]>([]);
 
   const initialValues: IProduct = {
     name: "",
@@ -80,6 +82,17 @@ const AddProduct: React.FC = () => {
         }
       }
     );
+
+    const fetchStandList = async () => {
+      try {
+        const response = await getStandList();
+        setStandList(response.data.standList);
+      } catch (error) {
+        console.error("Erro ao obter lista de barracas:", error);
+      }
+    }
+
+    fetchStandList();
   }, []);
   return (
     <div className="card card-container">
@@ -113,36 +126,17 @@ const AddProduct: React.FC = () => {
 
                       <div className="form-group">
                         <label htmlFor="stands">Barracas</label>
-                        <label>
-                          <Field
-                            name="stands"
-                            type="checkbox"
-                            value="barraca1"
-                            className=""
-                          />{" "}
-                          Barraca 1
-                        </label>
-
-                        <label>
-                          <Field
-                            name="stands"
-                            type="checkbox"
-                            value="barraca2"
-                            className=""
-                          />{" "}
-                          Barraca 2
-                        </label>
-
-                        <label>
-                          <Field
-                            name="stands"
-                            type="checkbox"
-                            value="barraca3"
-                            className=""
-                          />{" "}
-                          Barraca 3
-                        </label>
-
+                        {standList.map((stand: any, index: number) => (
+                          <div key={index} className="form-check">
+                            <Field
+                              name="stands"
+                              type="checkbox"
+                              value={stand.name}
+                              className="form-check-input"
+                            />
+                            <label className="form-check-label">{stand.name}</label>
+                          </div>
+                        ))}
                         <ErrorMessage
                           name="stands"
                           component="div"

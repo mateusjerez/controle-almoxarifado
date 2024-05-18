@@ -14,8 +14,23 @@ module.exports = function (app) {
     });
 
     app.post(
-        "/api/product/transactionin",
+        "/api/product/transaction",
         [authJwt.verifyToken, authJwt.isModerator],
         controller.transaction, update.updateStock
     );
+
+    app.get(
+        "/api/product/availablelist/:standIdent",
+        controller.getAvailableList
+    );
+
+    app.get(
+        "/api/product/standlist",
+        controller.getStandList
+    )
+
+    app.get(
+        "/api/product/stand/:standIdent",
+        controller.getStand
+    )
 };

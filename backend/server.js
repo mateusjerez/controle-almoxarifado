@@ -99,17 +99,20 @@ function initial() {
 
   Stand.create({
     id: 1,
-    name: "barraca1",
+    name: "CALDO",
+    identity: "202406CA01-05151039",
   })
 
   Stand.create({
     id: 2,
-    name: "barraca2",
+    name: "DOCES",
+    identity: "202406DO01-05151040"
   })
 
   Stand.create({
     id: 3,
-    name: "barraca3",
+    name: "ESPETINHO",
+    identity: "202406ES01-05151039"
   })
 
 }

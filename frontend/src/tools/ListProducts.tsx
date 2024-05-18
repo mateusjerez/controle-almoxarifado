@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import * as AuthService from "../services/auth.service";
 
-import { getList } from "../services/product.service";
+import { getProductList } from "../services/product.service";
 
 const ListProducts: React.FC = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
@@ -18,7 +18,7 @@ const ListProducts: React.FC = () => {
 
     const fetchProductList = async () => {
       try {
-        const response = await getList();
+        const response = await getProductList();
         setProductList(response.data.productList);
       } catch (error) {
         console.error("Erro ao obter lista de produtos:", error);
@@ -42,12 +42,23 @@ const ListProducts: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {producList.map((product: any, index: number) => (
-                  <tr className="">
-                    <th scope="row"> {product.productname}</th>
-                    <td>{product.productStock}</td>
-                  </tr>
-                ))}
+                {producList.map((product: any, index: number) => {
+                  if (product.stock < 10) {
+                    return (
+                      <tr className="text-danger" key={index}>
+                        <th scope="row">{product.name}</th>
+                        <td className="">{product.stock}</td>
+                      </tr>
+                    );
+                  } else {
+                    return (
+                      <tr className="" key={index}>
+                        <th scope="row">{product.name}</th>
+                        <td>{product.stock}</td>
+                      </tr>
+                    );
+                  }
+                })}
               </tbody>
             </table>
           </div>

@@ -11,10 +11,9 @@ export const addproduct = (name: string, stands: Array<String>, unit: string) =>
     }, { headers: authHeader() })
 }
 
-export const transactionin = (product: string, quantity: number, user: string) => {
-    const type = "IN";
-
-    return axios.post(API_URL + "transactionin", {
+export const transactionin = (product: string, quantity: number, user: string, type: string) => {
+    
+    return axios.post(API_URL + "transaction", {
         type,
         product,
         quantity,
@@ -22,6 +21,28 @@ export const transactionin = (product: string, quantity: number, user: string) =
     }, { headers: authHeader() })
 }
 
-export const getList = () => {
-    return axios.get(API_URL + "list")
+export const transactionout = (product: string, quantity: number, stand:string, user: string, type:string) => {
+    return axios.post(API_URL + "transaction", {
+        type,
+        product,
+        quantity,
+        user,
+        stand
+    }, { headers: authHeader() })
+}
+
+export const getAvailableList = (standIdent: string) => {
+    return axios.get(API_URL + "availablelist/" + standIdent)
+}
+
+export const getProductList = () => {
+    return axios.get(API_URL + "productlist")
+}
+
+export const getStandList = () => {
+    return axios.get(API_URL + "standlist")
+}
+
+export const getStand = (standIdent:string) => {
+    return axios.get(API_URL + "stand/" + standIdent)
 }

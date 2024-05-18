@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-import { transactionin } from "../services/product.service";
+import { transactionout } from "../services/product.service";
 
 import * as AuthService from "../services/auth.service";
 
@@ -12,11 +12,11 @@ import ITransaction from "../types/transaction.type";
 
 import { getProductList } from "../services/product.service";
 
-const ProductIn: React.FC = () => {
+const TransactionOut: React.FC = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
   const [content, setContent] = useState<string>("");
   const [successful, setSuccessful] = useState<boolean>(false);
-
+  
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
 
@@ -32,17 +32,18 @@ const ProductIn: React.FC = () => {
   const validationSchema = Yup.object().shape({
     product: Yup.string().required("Preenchimento obrigatório!"),
     quantity: Yup.string().required("Preenchimento obrigatório!"),
+    stand: Yup.string().required("Preenchimento obrigatório!"),
   });
 
   const handleTransaction = (formValue: ITransaction) => {
+    const type = "OUT";
     const user = AuthService.getCurrentUser();
-    const type = "IN";
-    const { product, quantity } = formValue;
+    const { product, quantity, stand } = formValue;
 
     setMessage("");
     setLoading(true);
 
-    transactionin(product, quantity, user.username, type).then(
+    transactionout(product, quantity, stand, user.username, type).then(
       (response) => {
         setMessage(response.data.message);
         setSuccessful(true);
@@ -104,7 +105,7 @@ const ProductIn: React.FC = () => {
       <header className="">
         {showModeratorBoard ? (
           <div>
-            <h3>Entrada de Produto</h3>
+            <h3>Saída de Produto</h3>
 
             <div>
               <Formik
@@ -122,7 +123,7 @@ const ProductIn: React.FC = () => {
                           as="select"
                           className="form-control"
                         >
-                          <option value="">Selecione o Produto</option>
+                            <option value="">Selecione um produto</option>
                           {producList.map((product: any, index: number) => (
                             <option value={product.productname}>
                               {product.productname}
@@ -145,6 +146,20 @@ const ProductIn: React.FC = () => {
                         />
                         <ErrorMessage
                           name="quantity"
+                          component="div"
+                          className="alert alert-danger"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="stand">Barraca</label>
+                        <Field
+                          name="stand"
+                          type="string"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="string"
                           component="div"
                           className="alert alert-danger"
                         />
@@ -188,4 +203,4 @@ const ProductIn: React.FC = () => {
   );
 };
 
-export default ProductIn;
+export default TransactionOut;

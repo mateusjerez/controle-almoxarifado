@@ -29,6 +29,7 @@ db.product = require("./product.model.js")(sequelize, Sequelize);
 db.stand = require("./stand.model.js")(sequelize, Sequelize);
 db.unit = require("./unit.model.js")(sequelize, Sequelize);
 db.transaction = require("./transaction.model.js")(sequelize, Sequelize);
+db.available = require("./product_available.model.js")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles"

@@ -43,18 +43,8 @@ exports.productadd = async (req, res) => {
 
 exports.productlist = async (req, res) => {
   try {
-    const productConsult = await Product.findAll();
-    let productList = [];
-
-    for (let i = 0; i < productConsult.length; i++) {
-      productList.push(
-        {
-          productname: productConsult[i].name,
-          productStock: productConsult[i].stock
-        })
-    }
-
-
+    const productList = await Product.findAll();
+  
     return res.status(200).send({
       productList
     });
