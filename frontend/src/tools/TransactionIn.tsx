@@ -100,11 +100,11 @@ const ProductIn: React.FC = () => {
     fetchProductList();
   }, []);
   return (
-    <div className="card card-container">
+    <div className="card col-8">
       <header className="">
         {showModeratorBoard ? (
           <div>
-            <h3>Entrada de Produto</h3>
+            <h3 className="card-header">Entrada de Produto</h3>
 
             <div>
               <Formik
@@ -114,46 +114,48 @@ const ProductIn: React.FC = () => {
               >
                 <Form>
                   {!successful && (
-                    <div>
-                      <div className="form-group">
-                        <label htmlFor="product">Produto</label>
-                        <Field
-                          name="product"
-                          as="select"
-                          className="form-control"
-                        >
-                          <option value="">Selecione o Produto</option>
-                          {producList.map((product: any, index: number) => (
-                            <option value={product.productname}>
-                              {product.productname}
-                            </option>
-                          ))}
-                        </Field>
-                        <ErrorMessage
-                          name="product"
-                          component="div"
-                          className="alert alert-danger"
-                        />
+                    <div className="container">
+                      <div className="row">
+                        <div className="form-group col-8">
+                          <label htmlFor="product">Produto</label>
+                          <Field
+                            name="product"
+                            as="select"
+                            className="form-control"
+                          >
+                            <option value="">Selecione o Produto</option>
+                            {producList.map((product: any, index: number) => (
+                              <option value={product.id}>
+                                {product.name}
+                              </option>
+                            ))}
+                          </Field>
+                          <ErrorMessage
+                            name="product"
+                            component="div"
+                            className="alert alert-danger"
+                          />
+                        </div>
+
+                        <div className="form-group col-2">
+                          <label htmlFor="quantity">Quantidade</label>
+                          <Field
+                            name="quantity"
+                            type="number"
+                            className="form-control"
+                          />
+                          <ErrorMessage
+                            name="quantity"
+                            component="div"
+                            className="alert alert-danger"
+                          />
+                        </div>
                       </div>
 
-                      <div className="form-group">
-                        <label htmlFor="quantity">Quantidade</label>
-                        <Field
-                          name="quantity"
-                          type="number"
-                          className="form-control"
-                        />
-                        <ErrorMessage
-                          name="quantity"
-                          component="div"
-                          className="alert alert-danger"
-                        />
-                      </div>
-
-                      <div className="form-group">
+                      <div className="d-grid gap-2 d-md-flex mx-auto justify-content-md-center">
                         <button
                           type="submit"
-                          className="btn btn-primary btn-block"
+                          className="btn btn-info btn-sm"
                           disabled={loading}
                         >
                           <span>Cadastrar</span>

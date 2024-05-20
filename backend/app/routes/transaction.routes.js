@@ -1,6 +1,6 @@
 const { authJwt } = require("../middleware");
 const controller = require("../controllers/transaction.controller");
-const update = require("../controllers/udateStock.controller");
+const update = require("../controllers/updateStock.controller");
 
 
 

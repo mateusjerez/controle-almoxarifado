@@ -11,38 +11,28 @@ exports.transaction = async (req, res, next) => {
         const trans_type = req.body.type;
         const trans_quantity = req.body.quantity;
 
-        const product = await Product.findOne({
-            where: {
-                name: req.body.product
-            }
-        })
-
         const user = await User.findOne({
             where: {
                 username: req.body.user
             }
         })
 
-        if (req.body.stand) {
-            const stand = await Stand.findOne({
-                where: {
-                    name: req.body.stand
-                }
-            })
-
+        if (trans_type === "OUT") {
+            
             const transaction = await Transaction.create({
                 type: trans_type,
                 quantity: trans_quantity,
                 userId: user.id,
-                productId: product.id,
-                standId: stand.id
+                productId: req.body.product,
+                standId: req.body.stand
             });
+
         } else {
             const transaction = await Transaction.create({
                 type: trans_type,
                 quantity: trans_quantity,
                 userId: user.id,
-                productId: product.id,
+                productId: req.body.product,
             });
         };
 

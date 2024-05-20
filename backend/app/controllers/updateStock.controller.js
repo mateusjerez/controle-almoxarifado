@@ -10,7 +10,7 @@ exports.updateStock = async (req, res) => {
 
         const product = await Product.findOne({
             where: {
-                name:req.body.product
+                id:req.body.product
             }
         })
 
@@ -23,7 +23,7 @@ exports.updateStock = async (req, res) => {
             { stock: stock_update },
             {
                 where: {
-                    id: product.id
+                    id: req.body.product
                 }
             },
         )

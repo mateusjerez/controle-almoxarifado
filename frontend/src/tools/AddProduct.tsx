@@ -90,18 +90,18 @@ const AddProduct: React.FC = () => {
       } catch (error) {
         console.error("Erro ao obter lista de barracas:", error);
       }
-    }
+    };
 
     fetchStandList();
   }, []);
   return (
-    <div className="card card-container">
+    <div className="">
       <header className="">
         {showModeratorBoard ? (
-          <div>
-            <h3>Cadastro de Produto</h3>
+          <div className="card col-8">
+            <h3 className="card-header">Cadastro de Produto</h3>
 
-            <div>
+            <div className="card-body">
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -123,20 +123,24 @@ const AddProduct: React.FC = () => {
                           className="alert alert-danger"
                         />
                       </div>
+                      <label htmlFor="stands">Barracas</label>
+                      <div className="form-group container-fluid">
+                        <div className="row align-middle">
+                          {standList.map((stand: any, index: number) => (
+                            <div key={index} className="form-check col-4">
+                              <Field
+                                name="stands"
+                                type="checkbox"
+                                value={stand.name}
+                                className="form-check-input form-control-sm"
+                              />
+                              <label className="form-check-label">
+                                {stand.name}
+                              </label>
+                            </div>
+                          ))}
+                        </div>
 
-                      <div className="form-group">
-                        <label htmlFor="stands">Barracas</label>
-                        {standList.map((stand: any, index: number) => (
-                          <div key={index} className="form-check">
-                            <Field
-                              name="stands"
-                              type="checkbox"
-                              value={stand.name}
-                              className="form-check-input"
-                            />
-                            <label className="form-check-label">{stand.name}</label>
-                          </div>
-                        ))}
                         <ErrorMessage
                           name="stands"
                           component="div"
@@ -158,10 +162,10 @@ const AddProduct: React.FC = () => {
                         />
                       </div>
 
-                      <div className="form-group">
+                      <div className="d-grid gap-2 col-2 mx-auto">
                         <button
                           type="submit"
-                          className="btn btn-primary btn-block"
+                          className="btn btn-info"
                           disabled={loading}
                         >
                           <span>Cadastrar</span>

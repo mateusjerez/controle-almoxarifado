@@ -21,7 +21,7 @@ export const transactionin = (product: string, quantity: number, user: string, t
     }, { headers: authHeader() })
 }
 
-export const transactionout = (product: string, quantity: number, stand:string, user: string, type:string) => {
+export const transactionout = (product: string, quantity: number, stand:number, user: string, type:string) => {
     return axios.post(API_URL + "transaction", {
         type,
         product,

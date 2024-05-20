@@ -16,10 +16,10 @@ import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
 import ListProducts from "./tools/ListProducts";
 import AddProduct from "./tools/AddProduct";
-//import TransactionIn from "./tools/TransactionIn";
-//import TransactionOut from "./tools/TransactionOut";
+import TransactionIn from "./tools/TransactionIn";
+import TransactionOut from "./tools/TransactionOut";
 import EventBus from "./common/EventBus";
-import Teste from "./tools/teste";
+//import Teste from "./tools/teste";
 
 
 const App: React.FC = () => {
@@ -53,10 +53,7 @@ const App: React.FC = () => {
   return (
     <div>
       <div className="flex row container-fluid">
-        <div>
-
-        </div>
-          <nav className="container navbar navbar-dark flex col-md-2 d-md-block bg-primary bg-gradient flex-column min-vh-100 sidebar">
+          <nav className="container navbar navbar-dark flex col-md-2 d-md-block bg-primary bg-gradient flex-column min-vh-100 sidebar gap=3">
             <Link to={"/"} className="navbar-brand">
               Controle
             </Link>
@@ -137,10 +134,8 @@ const App: React.FC = () => {
             <Route path="/admin" element={<BoardAdmin />} />
             <Route path="/addproduct" element={<AddProduct />} />
             <Route path="/listproduct" element={<ListProducts />} />
-            {/*<Route path="/transactionin" element={<TransactionIn />} />
+            <Route path="/transactionin" element={<TransactionIn />} />
             <Route path="/transactionout" element={<TransactionOut />} />
-            */}
-            <Route path="/teste" element={<Teste />} />
           </Routes>
         </div>
       </div>

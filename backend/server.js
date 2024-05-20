@@ -112,7 +112,66 @@ function initial() {
   Stand.create({
     id: 3,
     name: "ESPETINHO",
-    identity: "202406ES01-05151039"
+    identity: "202406ES01-05151041"
   })
 
+  Stand.create({
+    id: 4,
+    name: "MILHO",
+    identity: "202406MI01-05201619"
+  })
+
+  Stand.create({
+    id: 5,
+    name: "BEBIDA",
+    identity: "202406BE01-05201620"
+  })
+
+  Stand.create({
+    id: 6,
+    name: "PAO COM LINGUIÇA",
+    identity: "202406PA01-05201621"
+  })
+
+  Stand.create({
+    id: 7,
+    name: "SALGADOS",
+    identity: "202406SA01-05201622"
+  })
+
+  Stand.create({
+    id: 8,
+    name: "QUENTÃO",
+    identity: "202406QU01-05201623"
+  })
+
+  Stand.create({
+    id: 9,
+    name: "ARGOLA",
+    identity: "202406AR01-05201624"
+  })
+
+  Stand.create({
+    id: 10,
+    name: "PESCARIA",
+    identity: "202406PE01-05201625"
+  })
+
+  Stand.create({
+    id: 11,
+    name: "CHUTE AO GOL",
+    identity: "202406CH01-05201626"
+  })
+
+  Stand.create({
+    id: 12,
+    name: "BINGO",
+    identity: "202406BI01-05201627"
+  })
+
+  Stand.create({
+    id: 13,
+    name: "LOJA",
+    identity: "202406LO01-05201628"
+  })
 }
