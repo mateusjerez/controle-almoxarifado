@@ -41,6 +41,7 @@ const AddProduct: React.FC = () => {
       (response) => {
         setMessage(response.data.message);
         setSuccessful(true);
+
       },
       (error) => {
         const resMessage =

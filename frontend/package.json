@@ -3,9 +3,12 @@
   "version": "1.1.0",
   "private": true,
   "devDependencies": {
+    "@canvasjs/charts": "^3.8.7",
+    "@canvasjs/react-charts": "^1.0.2",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
+    "@types/canvasjs": "^1.9.11",
     "@types/jest": "^27.0.1",
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
@@ -48,5 +51,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "dependencies": {
+    "@canvasjs/charts": "^3.8.7",
+    "@canvasjs/react-charts": "^1.0.2",
+    "canvasjs-react-charts": "^1.0.5"
   }
 }

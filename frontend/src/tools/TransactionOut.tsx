@@ -47,9 +47,6 @@ const TransactionOut: React.FC = () => {
     setMessage("");
     setLoading(true);
 
-    const type = "OUT";
-    const user = AuthService.getCurrentUser();
-
     const { standIdent } = formValue;
 
     setStandIdent(standIdent);

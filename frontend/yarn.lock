@@ -1162,6 +1162,16 @@
   resolved "https://registry.npmjs.org/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@canvasjs/charts@^3.7.5", "@canvasjs/charts@^3.8.7":
+  version "3.8.7"
+  resolved "https://registry.npmjs.org/@canvasjs/charts/-/charts-3.8.7.tgz"
+  integrity sha512-WuZzKoippiDl5H9UbOYcxV5oyjgKrTt1FwexER3KFR6dJ1v5D+wyojEY24KYuFYkL6SwdaZbyZOna6Iyqu9Phg==
+
+"@canvasjs/react-charts@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.npmjs.org/@canvasjs/react-charts/-/react-charts-1.0.2.tgz"
+  integrity sha512-PZgJlDbGdMF4AN/KvrvGY9X50EByJMZ7MHfQB/U0aky9Onn9mt0CpsvwudBsBe+DofaV3SHR4SHn/Wfo/pubDw==
+
 "@csstools/normalize.css@*":
   version "12.1.1"
   resolved "https://registry.npmjs.org/@csstools/normalize.css/-/normalize.css-12.1.1.tgz"
@@ -1939,6 +1949,11 @@
   integrity sha512-z9fJ5Im06zvUL548KvYNecEVlA7cVDkGUi6kZusb04mpyEFKCIZJvloCcmpmLaIahDpOQGHaHmG6imtPMmPXGQ==
   dependencies:
     "@types/node" "*"
+
+"@types/canvasjs@^1.9.11":
+  version "1.9.11"
+  resolved "https://registry.npmjs.org/@types/canvasjs/-/canvasjs-1.9.11.tgz"
+  integrity sha512-sx1sJS7Y9Hy/jd70Zj23xn2c5LE2tXM3Puh0aQoaMdTeHkbwueeTUeN531sepyujj47UZZGvim85DLiOjpiUeQ==
 
 "@types/connect-history-api-fallback@^1.3.5":
   version "1.5.4"
@@ -3180,6 +3195,11 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001587, caniuse-lite@^1.0.30001599:
   version "1.0.30001617"
   resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001617.tgz"
   integrity sha512-mLyjzNI9I+Pix8zwcrpxEbGlfqOkF9kM3ptzmKNw5tizSyYwMe+nGLTqMK9cO+0E+Bh6TsBxNAaHWEM8xwSsmA==
+
+canvasjs-react-charts@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.npmjs.org/canvasjs-react-charts/-/canvasjs-react-charts-1.0.5.tgz"
+  integrity sha512-8P3KnAvCqftmqf4O/xG6PlIDcTr0IvzuE4l6ACXIOROKtFmnmUu/xPEeq+0vI9Xvh7zXjzZvRqw0p1uxXr034g==
 
 case-sensitive-paths-webpack-plugin@^2.4.0:
   version "2.4.0"
@@ -8061,7 +8081,7 @@ react-scripts@^5.0.1:
   optionalDependencies:
     fsevents "^2.3.2"
 
-react@^18.0.0, react@^18.2.0, "react@>= 16", react@>=16.8, react@>=16.8.0:
+react@^18.0.0, react@^18.2.0, "react@>= 16", react@>=16.0.0, react@>=16.8, react@>=16.8.0:
   version "18.2.0"
   resolved "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==

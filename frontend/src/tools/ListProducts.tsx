@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-
 import * as AuthService from "../services/auth.service";
-
 import { getProductList } from "../services/product.service";
 
 const ListProducts: React.FC = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
-  
+
   const [producList, setProductList] = useState<any[]>([]);
 
   useEffect(() => {
@@ -43,28 +41,26 @@ const ListProducts: React.FC = () => {
               </thead>
               <tbody>
                 {producList.map((product: any, index: number) => {
-                  if (product.stock < 10) {
-                    return (
-                      <tr className="text-danger" key={index}>
-                        <th scope="row">{product.name}</th>
-                        <td className="">{product.stock}</td>
+                    return(
+                      <tr className={product.stock < 10 ? "text-danger" : ""} key={index}>
+                        <td>{product.name}</td>
+                        <td className="">
+                          {product.stock}
+                          {product.stock < 10 ? (<img
+                            src={"../alert.png"}
+                            alt=""
+                            className="img-fluid px-4"
+                          />) : ""}
+                        </td>
                       </tr>
                     );
-                  } else {
-                    return (
-                      <tr className="" key={index}>
-                        <th scope="row">{product.name}</th>
-                        <td>{product.stock}</td>
-                      </tr>
-                    );
-                  }
                 })}
               </tbody>
             </table>
           </div>
         </div>
       ) : (
-        <div>
+        <div className="card">
           <h4>Faça o login para ter acesso ao sistema!</h4>
         </div>
       )}
