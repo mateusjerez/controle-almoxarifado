@@ -63,7 +63,7 @@ const Report: React.FC = () => {
     },
     data: [
       {
-        type: "column",
+        type: "bar",
         dataPoints: standProduct,
       },
     ],

@@ -90,23 +90,6 @@ const TransactionOut: React.FC = () => {
         }
       );
     });
-    /*transactionout(product, quantity, stand, user.username, type).then(
-      (response) => {
-        setMessage(response.data.message);
-        setSuccessful(true);
-      },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-
-        setMessage(resMessage);
-        setSuccessful(false);
-      }
-    );*/
   };
 
   useEffect(() => {
