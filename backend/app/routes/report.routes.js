@@ -13,11 +13,13 @@ module.exports = function (app) {
 
     app.get(
         "/api/report/standxproduct/:standId",
+        [authJwt.verifyToken, authJwt.isModerator],
         controller.standXProduct
     );   
 
     app.get(
         "/api/report/stockalert",
+        [authJwt.verifyToken, authJwt.isModerator],
         controller.getStockAlert
     )
 }

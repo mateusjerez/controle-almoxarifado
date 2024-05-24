@@ -60,7 +60,7 @@ exports.getAvailableList = async (req, res) => {
             {
                 where: {
                     standId: stand.id
-                }
+                },
             }
         );
 
@@ -89,7 +89,11 @@ exports.getAvailableList = async (req, res) => {
 
 exports.getStandList = async (req, res) => {
     try {
-        const standList = await Stand.findAll();
+        const standList = await Stand.findAll({
+            order: [
+                ['name', 'ASC']
+              ]
+        });
 
         return res.status(200).send({
             standList

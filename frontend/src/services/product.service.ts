@@ -32,17 +32,17 @@ export const transactionout = (product: string, quantity: number, stand:number, 
 }
 
 export const getAvailableList = (standIdent: string) => {
-    return axios.get(API_URL + "availablelist/" + standIdent)
+    return axios.get(API_URL + "availablelist/" + standIdent, { headers: authHeader() })
 }
 
 export const getProductList = () => {
-    return axios.get(API_URL + "productlist")
+    return axios.get(API_URL + "productlist", { headers: authHeader() })
 }
 
 export const getStandList = () => {
-    return axios.get(API_URL + "standlist")
+    return axios.get(API_URL + "standlist", { headers: authHeader() })
 }
 
 export const getStand = (standIdent:string) => {
-    return axios.get(API_URL + "stand/" + standIdent)
+    return axios.get(API_URL + "stand/" + standIdent, { headers: authHeader() })
 }

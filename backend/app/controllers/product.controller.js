@@ -19,7 +19,7 @@ exports.productadd = async (req, res) => {
           name: {
             [Op.or]: req.body.stands,
           },
-        },
+        }
       });
 
       const result_stand = product.setStands(stands);
@@ -43,7 +43,12 @@ exports.productadd = async (req, res) => {
 
 exports.productlist = async (req, res) => {
   try {
-    const productList = await Product.findAll();
+    const productList = await Product.findAll({
+      order: [
+        ['name', 'ASC']
+      ]
+    }  
+    );
   
     return res.status(200).send({
       productList

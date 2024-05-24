@@ -10,12 +10,21 @@ const Register: React.FC = () => {
   const [message, setMessage] = useState<string>("");
 
   const initialValues: IUser = {
+    name: "",
     username: "",
     password: "",
     role: "",
   };
 
   const validationSchema = Yup.object().shape({
+    name: Yup.string()
+      .test(
+        "len",
+        "O nome deve ter no mínimo 3 caracteres!",
+        (val: any) =>
+          val && val.toString().length >= 3 && val.toString().length <= 20
+      )
+      .required("This field is required!"),
     username: Yup.string()
       .test(
         "len",
@@ -92,7 +101,16 @@ const Register: React.FC = () => {
             {!successful && (
               <div>
                 <div className="form-group">
-                  <label htmlFor="username"> Nome do usuário </label>
+                  <label htmlFor="name"> Nome </label>
+                  <Field name="name" type="text" className="form-control" />
+                  <ErrorMessage
+                    name="name"
+                    component="div"
+                    className="alert alert-danger"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="username"> Usuário </label>
                   <Field name="username" type="text" className="form-control" />
                   <ErrorMessage
                     name="username"
@@ -100,7 +118,6 @@ const Register: React.FC = () => {
                     className="alert alert-danger"
                   />
                 </div>
-
                 <div className="form-group">
                   <label htmlFor="password"> Senha </label>
                   <Field

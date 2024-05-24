@@ -57,6 +57,9 @@ exports.getStockAlert = async (req, res) => {
                     [Op.lt]: 10
                 }
             },
+            order: [
+                ['name', 'ASC']
+              ],
             attributes: ['name', 'stock']
         });
 

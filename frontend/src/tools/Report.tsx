@@ -9,7 +9,7 @@ import CanvasJSReact from "@canvasjs/react-charts";
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 const Report: React.FC = () => {
-  const [standId, setStandId] = useState<number>(1);
+  const [standId, setStandId] = useState<number>(9);
   const [standList, setStandList] = useState<any[]>([]);
   const [standProduct, setStandProduct] = useState<any[]>([]);
   const [stockAlert, setStokAlert] = useState<any[]>([]);

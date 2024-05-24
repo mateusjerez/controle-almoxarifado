@@ -12,6 +12,7 @@ exports.signup = async (req, res) => {
   // Save User to Database
   try {
     const user = await User.create({
+      name: req.body.name,
       username: req.body.username,
       password: bcrypt.hashSync(req.body.password, 8),
     });
@@ -80,6 +81,7 @@ exports.signin = async (req, res) => {
 
     return res.status(200).send({
       id: user.id,
+      name: user.name,
       username: user.username,
       roles: authorities,
       accessToken: token,

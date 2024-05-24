@@ -19,6 +19,9 @@ module.exports = function (app) {
     controller.productadd
   );
 
-  app.get("/api/product/productlist", controller.productlist)
+  app.get(
+    "/api/product/productlist", 
+    [authJwt.verifyToken, authJwt.isModerator],
+    controller.productlist)
 
 };

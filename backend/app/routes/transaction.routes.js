@@ -21,16 +21,19 @@ module.exports = function (app) {
 
     app.get(
         "/api/product/availablelist/:standIdent",
+        [authJwt.verifyToken, authJwt.isModerator],
         controller.getAvailableList
     );
 
     app.get(
         "/api/product/standlist",
+        [authJwt.verifyToken, authJwt.isModerator],
         controller.getStandList
     )
 
     app.get(
         "/api/product/stand/:standIdent",
+        [authJwt.verifyToken, authJwt.isModerator],
         controller.getStand
     )
 };
