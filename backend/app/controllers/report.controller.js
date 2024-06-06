@@ -15,7 +15,7 @@ exports.standXProduct = async (req, res) => {
             where: {
                 standId: standId,
             },
-            attributes: ['productId', 'quantity']
+            attributes: ['type', 'productId', 'quantity']
         });
 
         let dataReturn = [];
@@ -30,7 +30,7 @@ exports.standXProduct = async (req, res) => {
 
             if (dataReturn.filter(e => e.label === product.name).length > 0) {
                 const index = dataReturn.findIndex(e => e.label === product.name);
-                dataReturn[index].y += operations[i].quantity;
+                operations[i].type === 'OUT' ? dataReturn[index].y += operations[i].quantity : dataReturn[index].y -= operations[i].quantity;
                 continue;
             } else {
                 dataReturn.push({

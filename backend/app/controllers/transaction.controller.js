@@ -17,30 +17,18 @@ exports.transaction = async (req, res, next) => {
             }
         })
 
-        if (trans_type === "OUT") {
-            
-            const transaction = await Transaction.create({
-                type: trans_type,
-                quantity: trans_quantity,
-                userId: user.id,
-                productId: req.body.product,
-                standId: req.body.stand
-            });
-
-        } else {
-            const transaction = await Transaction.create({
-                type: trans_type,
-                quantity: trans_quantity,
-                userId: user.id,
-                productId: req.body.product,
-            });
-        };
-
+        const transaction = await Transaction.create({
+            type: trans_type,
+            quantity: trans_quantity,
+            userId: user.id,
+            productId: req.body.product,
+            standId: req.body.stand
+        });
 
         next();
 
     } catch (error) {
-        res.status(500).send({ message: error.message + " Erro ao realizar transação! " + req.body.product + " " + req.body.user + " " + req.body.type + " " + req.body.quantity });
+        res.status(500).send({ message: error.message + " Erro ao realizar transação do tipo " + + req.body.type + ", produto: " + req.body.product + " / " + req.body.user + " / " + req.body.quantity + " / " + req.body.stand });
     }
 }
 
@@ -55,7 +43,7 @@ exports.getAvailableList = async (req, res) => {
                 }
             }
         );
-        
+
         const productAvailable = await Available.findAll(
             {
                 where: {
@@ -92,7 +80,7 @@ exports.getStandList = async (req, res) => {
         const standList = await Stand.findAll({
             order: [
                 ['name', 'ASC']
-              ]
+            ]
         });
 
         return res.status(200).send({

@@ -186,11 +186,14 @@ const AddProduct: React.FC = () => {
 
                       <div className="form-group">
                         <label htmlFor="unit">Medida</label>
-                        <Field
-                          name="unit"
-                          type="text"
-                          className="form-control"
-                        />
+                        <Field name="unit" as="select" className="form-control">
+                          <option value="">Selecione a unidade de medida</option>
+                          <option value="quilo">Kg</option>
+                          <option value="unidade">Unidade</option>
+                          <option value="litro">Litro</option>
+                          <option value="pacote">Pacote</option>
+                          <option value="caixa">Caixa</option>
+                        </Field>
                         <ErrorMessage
                           name="unit"
                           component="div"

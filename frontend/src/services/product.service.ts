@@ -2,6 +2,7 @@ import axios from "axios";
 import authHeader from "./auth-header";
 
 const API_URL = "http://localhost:8080/api/product/";
+//const API_URL = "http://pascom.suzarte.com.br:12782/api/product/";
 
 export const addproduct = (name: string, stands: Array<String>, unit: string) => {
     return axios.post(API_URL + "productadd", {
@@ -11,17 +12,8 @@ export const addproduct = (name: string, stands: Array<String>, unit: string) =>
     }, { headers: authHeader() })
 }
 
-export const transactionin = (product: string, quantity: number, user: string, type: string) => {
+export const transaction = (product: string, quantity: number, stand:number, user: string, type: string) => {
     
-    return axios.post(API_URL + "transaction", {
-        type,
-        product,
-        quantity,
-        user
-    }, { headers: authHeader() })
-}
-
-export const transactionout = (product: string, quantity: number, stand:number, user: string, type:string) => {
     return axios.post(API_URL + "transaction", {
         type,
         product,

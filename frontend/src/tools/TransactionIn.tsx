@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-import { transactionin } from "../services/product.service";
+import { transaction } from "../services/product.service";
 
 import * as AuthService from "../services/auth.service";
 
@@ -11,6 +11,7 @@ import EventBus from "../common/EventBus";
 import ITransaction from "../types/transaction.type";
 
 import { getProductList } from "../services/product.service";
+import { getStandList } from "../services/product.service";
 
 const ProductIn: React.FC = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
@@ -21,13 +22,17 @@ const ProductIn: React.FC = () => {
   const [message, setMessage] = useState<string>("");
 
   const [producList, setProductList] = useState<any[]>([]);
+  const [standList, setStandList] = useState<any[]>([]);
+  const [inDevolution, setInDevolution] = useState<boolean>(false);
+  const [standId, setStandId] = useState<number>(100);
+
 
   const initialValues: ITransaction = {
     product: "",
     stand: "",
     quantity: 0,
     user: "",
-  };
+  }
 
   const closeAlert = () => {
     setMessage("");
@@ -36,18 +41,24 @@ const ProductIn: React.FC = () => {
 
   const validationSchema = Yup.object().shape({
     product: Yup.string().required("Preenchimento obrigatório!"),
-    quantity: Yup.string().required("Preenchimento obrigatório!"),
+    quantity: Yup.number()
+      .positive("O valor deve ser positivo!")
+      .required("Preenchimento obrigatório!"),
   });
 
   const handleTransaction = (formValue: ITransaction) => {
     const user = AuthService.getCurrentUser();
     const type = "IN";
-    const { product, quantity } = formValue;
+    const { product, quantity, stand} = formValue;
+
+    
+    console.log(standId);
+    console.log(origin);
 
     setMessage("");
     setLoading(true);
 
-    transactionin(product, quantity, user.username, type).then(
+    transaction(product, quantity, standId, user.username, type).then(
       (response) => {
         setMessage(response.data.message);
         setSuccessful(true);
@@ -65,6 +76,20 @@ const ProductIn: React.FC = () => {
       }
     );
   };
+
+  useEffect(() => {
+    const fetchStandList = async () => {
+      try {
+        const response = await getStandList();
+        setStandList(response.data.standList);
+      } catch (error) {
+        console.error("Erro ao obter lista de barracas:", error);
+      }
+    };
+    fetchStandList();
+    console.log(inDevolution);
+
+  }, [inDevolution]);
 
   useEffect(() => {
     const user = AuthService.getCurrentUser();
@@ -117,32 +142,32 @@ const ProductIn: React.FC = () => {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                 <g
                   id="SVGRepo_tracerCarrier"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 ></g>
                 <g id="SVGRepo_iconCarrier">
                   {" "}
                   <path
                     d="M12 2L12 10M12 10L15 7M12 10L9 7"
                     stroke="#000000"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   ></path>{" "}
                   <path
                     d="M2 13H5.16026C6.06543 13 6.51802 13 6.91584 13.183C7.31367 13.3659 7.60821 13.7096 8.19729 14.3968L8.80271 15.1032C9.39179 15.7904 9.68633 16.1341 10.0842 16.317C10.482 16.5 10.9346 16.5 11.8397 16.5H12.1603C13.0654 16.5 13.518 16.5 13.9158 16.317C14.3137 16.1341 14.6082 15.7904 15.1973 15.1032L15.8027 14.3968C16.3918 13.7096 16.6863 13.3659 17.0842 13.183C17.482 13 17.9346 13 18.8397 13H22"
                     stroke="#000000"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
                   ></path>{" "}
                   <path
                     d="M22 12.0001C22 16.7141 22 19.0712 20.5355 20.5356C19.0711 22.0001 16.714 22.0001 12 22.0001C7.28595 22.0001 4.92893 22.0001 3.46447 20.5356C2 19.0712 2 16.7141 2 12.0001C2 7.28604 2 4.92902 3.46447 3.46455C4.28094 2.64808 5.37486 2.28681 7 2.12695M17 2.12695C18.6251 2.28681 19.7191 2.64808 20.5355 3.46455C21.5093 4.43829 21.8356 5.80655 21.9449 8"
                     stroke="#000000"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
                   ></path>{" "}
                 </g>
               </svg>
@@ -168,8 +193,8 @@ const ProductIn: React.FC = () => {
                             className="form-control"
                           >
                             <option value="">Selecione o Produto</option>
-                            {producList.map((product: any, index: number) => (
-                              <option value={product.id}>{product.name}</option>
+                            {producList.map((product: any) => (
+                              <option key={product.id} value={product.id}>{product.name}</option>
                             ))}
                           </Field>
                           <ErrorMessage
@@ -178,7 +203,6 @@ const ProductIn: React.FC = () => {
                             className="alert alert-danger"
                           />
                         </div>
-
                         <div className="form-group col-2">
                           <label htmlFor="quantity">Quantidade</label>
                           <Field
@@ -193,7 +217,46 @@ const ProductIn: React.FC = () => {
                           />
                         </div>
                       </div>
+                      <div className="form-group">
+                          <label htmlFor="origin">Origem</label>
+                          <Field
+                            name="origin"
+                            as="select"
+                            className="form-control"
+                            onChange={(e:any) => {
+                              if (e.target.value === "2") setInDevolution(true);
+                              else setInDevolution(false);
+                            }}
+                          >
+                            <option value="">Selecione a Origem</option>
+                            <option value="100">Compra / Doação</option>
+                            <option value="2">Devolução</option>
+                          </Field>
+                      </div>
+                      {inDevolution && (
+                        <div className="form-group">
+                          <label htmlFor="stand">Barraca</label>
+                          <Field
+                            name="stand"
+                            as="select"
+                            className="form-control"
+                            onChange={(e: any) => {
+                              setStandId(Number(e.target.value));
+                            }}
+                          >
+                            <option value="">Selecione a Barraca</option>
+                            {standList.map((stand: any) => (
+                              <option key={stand.id} value={stand.id}>{stand.name}</option>
+                            ))}
 
+                          </Field>
+                          <ErrorMessage
+                            name="stand"
+                            component="div"
+                            className="alert alert-danger"
+                          />
+                        </div>
+                      )}
                       <div className="d-grid gap-2 d-md-flex mx-auto justify-content-md-center">
                         <button
                           type="submit"
