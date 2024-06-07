@@ -26,7 +26,6 @@ const ProductIn: React.FC = () => {
   const [inDevolution, setInDevolution] = useState<boolean>(false);
   const [standId, setStandId] = useState<number>(100);
 
-
   const initialValues: ITransaction = {
     product: "",
     stand: "",

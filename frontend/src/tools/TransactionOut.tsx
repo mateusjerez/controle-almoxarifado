@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Field, Form, FieldArray } from "formik";
+import { Button, Modal } from "react-bootstrap";
 
 import { transaction } from "../services/product.service";
-
 import * as AuthService from "../services/auth.service";
-
 import { getModeratorBoard } from "../services/user.service";
-import EventBus from "../common/EventBus";
-
 import { getAvailableList, getStand } from "../services/product.service";
 
+import EventBus from "../common/EventBus";
+
 const TransactionOut: React.FC = () => {
+  const [show, setShow] = useState<boolean>(false);
+
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
   const [content, setContent] = useState<string>("");
   const [successful, setSuccessful] = useState<boolean>(false);
@@ -21,6 +22,7 @@ const TransactionOut: React.FC = () => {
   const [standName, setStandName] = useState<string>("");
   const [productAvailable, setProductAvailable] = useState<any[]>([]);
   const [standId, setStandId] = useState<number>(0);
+  const [confirm, setConfirm] = useState<boolean>(false);
 
   const initialValues: {
     standIdent: "";
@@ -52,12 +54,26 @@ const TransactionOut: React.FC = () => {
     setStandIdent(standIdent);
   };
 
+  const handleClose = () => setShow(false);
+
+  const handleShow = () => setShow(true);
+
+  const handleCancel = () => {
+    setConfirm(false);
+  };
+
+  const handleConfirm = () => {
+    setConfirm(true);
+    setShow(false);
+  };
+
   const handleTransaction = (formValue: {
     standIdent: string;
     transactions: Array<any>;
   }) => {
     setMessage("");
     setLoading(true);
+    setShow(false);
 
     const type = "OUT";
     const user = AuthService.getCurrentUser();
@@ -222,6 +238,7 @@ const TransactionOut: React.FC = () => {
                                   name={`transactions.${index}.product`}
                                   as="select"
                                   className="form-control col-6"
+                                  disabled={confirm}
                                 >
                                   <option value="">Selecione um produto</option>
                                   {productAvailable.map((product) => (
@@ -234,102 +251,110 @@ const TransactionOut: React.FC = () => {
                                   name={`transactions.${index}.quantity`}
                                   type="number"
                                   className="form-control col-2 mx-1"
+                                  placeholder="Quantidade"
+                                  disabled={confirm}
                                 />
                                 {productAvailable.length > 1 && (
                                   <>
-                                    <button
-                                      type="button"
-                                      onClick={() =>
-                                        arrayHelpers.insert(index, {
-                                          product: "",
-                                          quantity: 0,
-                                        })
-                                      }
-                                      className="btn btn-primary mx-1"
-                                    >
-                                      <svg
-                                        width="22px"
-                                        height="22px"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <g
-                                          id="SVGRepo_bgCarrier"
-                                          strokeWidth="0"
-                                        ></g>
-                                        <g
-                                          id="SVGRepo_tracerCarrier"
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                        ></g>
-                                        <g id="SVGRepo_iconCarrier">
-                                          {" "}
-                                          <path
-                                            d="M15 12L12 12M12 12L9 12M12 12L12 9M12 12L12 15"
-                                            stroke="#ffffff"
-                                            strokeWidth="1.5"
-                                            strokeLinecap="round"
-                                          ></path>{" "}
-                                          <path
-                                            d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8"
-                                            stroke="#ffffff"
-                                            strokeWidth="1.5"
-                                            strokeLinecap="round"
-                                          ></path>{" "}
-                                        </g>
-                                      </svg>
-                                    </button>
-                                    <button
-                                      type="button"
-                                      onClick={() => arrayHelpers.remove(index)}
-                                      className="btn btn-danger"
-                                    >
-                                      <svg
-                                        width="20px"
-                                        height="20px"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <g
-                                          id="SVGRepo_bgCarrier"
-                                          strokeWidth="0"
-                                        ></g>
-                                        <g
-                                          id="SVGRepo_tracerCarrier"
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                        ></g>
-                                        <g id="SVGRepo_iconCarrier">
-                                          {" "}
-                                          <path
-                                            d="M18 2.05222C19.3683 2.14165 20.2228 2.38425 20.7896 3.04233C21.6872 4.08466 21.4469 5.68646 20.9664 8.89004L19.7664 16.89C19.4008 19.3276 19.2179 20.5464 18.374 21.2732C17.5301 22 16.2976 22 13.8328 22H10.167C7.70216 22 6.46972 22 5.6258 21.2732C4.78187 20.5464 4.59905 19.3276 4.23341 16.89L3.03341 8.89004C2.55287 5.68645 2.3126 4.08466 3.21024 3.04233C4.10789 2 5.7276 2 8.96703 2H14"
-                                            stroke="#ffffff"
-                                            strokeWidth="1.5"
-                                            strokeLinecap="round"
-                                          ></path>{" "}
-                                          <path
-                                            d="M21 6H3"
-                                            stroke="#ffffff"
-                                            strokeWidth="1.5"
-                                            strokeLinecap="round"
-                                          ></path>{" "}
-                                          <path
-                                            d="M19 19H5"
-                                            stroke="#ffffff"
-                                            strokeWidth="1.5"
-                                            strokeLinecap="round"
-                                          ></path>{" "}
-                                          <path
-                                            d="M8 6L3.5 11L11 19M14 6L4 16M20 6L7 19M13 19L20.5 11L16 6M10 6L20 16M4 6L17 19"
-                                            stroke="#ffffff"
-                                            strokeWidth="1.5"
-                                            strokeLinejoin="round"
-                                          ></path>{" "}
-                                        </g>
-                                      </svg>
-                                    </button>
+                                    {!confirm && (
+                                      <>
+                                        <button
+                                          type="button"
+                                          onClick={() =>
+                                            arrayHelpers.insert(index, {
+                                              product: "",
+                                              quantity: 0,
+                                            })
+                                          }
+                                          className="btn btn-primary mx-1"
+                                        >
+                                          <svg
+                                            width="22px"
+                                            height="22px"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                          >
+                                            <g
+                                              id="SVGRepo_bgCarrier"
+                                              strokeWidth="0"
+                                            ></g>
+                                            <g
+                                              id="SVGRepo_tracerCarrier"
+                                              strokeLinecap="round"
+                                              strokeLinejoin="round"
+                                            ></g>
+                                            <g id="SVGRepo_iconCarrier">
+                                              {" "}
+                                              <path
+                                                d="M15 12L12 12M12 12L9 12M12 12L12 9M12 12L12 15"
+                                                stroke="#ffffff"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                              ></path>{" "}
+                                              <path
+                                                d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8"
+                                                stroke="#ffffff"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                              ></path>{" "}
+                                            </g>
+                                          </svg>
+                                        </button>
+                                        <button
+                                          type="button"
+                                          onClick={() =>
+                                            arrayHelpers.remove(index)
+                                          }
+                                          className="btn btn-danger"
+                                        >
+                                          <svg
+                                            width="20px"
+                                            height="20px"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                          >
+                                            <g
+                                              id="SVGRepo_bgCarrier"
+                                              strokeWidth="0"
+                                            ></g>
+                                            <g
+                                              id="SVGRepo_tracerCarrier"
+                                              strokeLinecap="round"
+                                              strokeLinejoin="round"
+                                            ></g>
+                                            <g id="SVGRepo_iconCarrier">
+                                              {" "}
+                                              <path
+                                                d="M18 2.05222C19.3683 2.14165 20.2228 2.38425 20.7896 3.04233C21.6872 4.08466 21.4469 5.68646 20.9664 8.89004L19.7664 16.89C19.4008 19.3276 19.2179 20.5464 18.374 21.2732C17.5301 22 16.2976 22 13.8328 22H10.167C7.70216 22 6.46972 22 5.6258 21.2732C4.78187 20.5464 4.59905 19.3276 4.23341 16.89L3.03341 8.89004C2.55287 5.68645 2.3126 4.08466 3.21024 3.04233C4.10789 2 5.7276 2 8.96703 2H14"
+                                                stroke="#ffffff"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                              ></path>{" "}
+                                              <path
+                                                d="M21 6H3"
+                                                stroke="#ffffff"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                              ></path>{" "}
+                                              <path
+                                                d="M19 19H5"
+                                                stroke="#ffffff"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                              ></path>{" "}
+                                              <path
+                                                d="M8 6L3.5 11L11 19M14 6L4 16M20 6L7 19M13 19L20.5 11L16 6M10 6L20 16M4 6L17 19"
+                                                stroke="#ffffff"
+                                                strokeWidth="1.5"
+                                                strokeLinejoin="round"
+                                              ></path>{" "}
+                                            </g>
+                                          </svg>
+                                        </button>
+                                      </>
+                                    )}
                                   </>
                                 )}
                               </div>
@@ -337,9 +362,73 @@ const TransactionOut: React.FC = () => {
                           </div>
                         )}
                       />
-                      <button type="submit" className="btn btn-info mt-3">
-                        Concluir
-                      </button>
+                      <Modal show={show} onHide={handleClose}>
+                        <Modal.Header closeButton>
+                          <Modal.Title>Confirme os Produtos</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                          <h5>
+                            Confirme os produtos para a barraca {standName}
+                          </h5>
+                          <div  className="form-">
+                          <ul className="list-group">
+                            {show && (
+                              <>
+                                {values.transactions.map(
+                                  (transaction, index) => {
+                                    const product = productAvailable.find(
+                                      (product) => product.id === Number(transaction.product)
+                                    );
+
+                                    return (
+                                      <li key={index} className="list-group-item">
+                                        {product.name}: {transaction.quantity}
+                                      </li>
+                                    );
+                                  }
+                                )}
+                              </>
+                            )}
+                          </ul>
+                          </div>
+                          
+                        </Modal.Body>
+                        <Modal.Footer>
+                          <Button variant="secondary" onClick={handleClose}>
+                            Cancelar
+                          </Button>
+                          <Button variant="primary" onClick={handleConfirm}>
+                            Confirmar
+                          </Button>
+                        </Modal.Footer>
+                      </Modal>
+                      {confirm ? (
+                        <div className="d-flex">
+                          <div>
+                            <button
+                              className="btn btn-success mt-3 mx-2"
+                              type="submit"
+                            >
+                              Concluir
+                            </button>
+                          </div>
+                          <div>
+                            <button
+                              className="btn btn-secondary mt-3"
+                              onClick={handleCancel}
+                            >
+                              Cancelar
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <Button
+                          className="btn btn-info mt-3"
+                          onClick={handleShow}
+                        >
+                          Próximo
+                        </Button>
+                      )}
                     </>
                   )}
                   {message && (

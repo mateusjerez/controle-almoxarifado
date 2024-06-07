@@ -7,19 +7,19 @@ import "./App.css";
 import * as AuthService from "./services/auth.service";
 import IUser from "./types/user.type";
 
-import Login from "./components/Login";
-import Register from "./components/Register";
-import Home from "./tools/ListProducts";
-import Profile from "./components/Profile";
-import BoardUser from "./components/BoardUser";
-import BoardModerator from "./components/BoardModerator";
-import BoardAdmin from "./components/BoardAdmin";
-import ListProducts from "./tools/ListProducts";
-import AddProduct from "./tools/AddProduct";
-import TransactionIn from "./tools/TransactionIn";
-import TransactionOut from "./tools/TransactionOut";
+import Login from "./components/login";
+import Register from "./components/register";
+import Home from "./tools/listProducts";
+import Profile from "./components/profile";
+import BoardUser from "./components/boardUser";
+import BoardModerator from "./components/boardModerator";
+import BoardAdmin from "./components/boardAdmin";
+import ListProducts from "./tools/listProducts";
+import AddProduct from "./tools/addProduct";
+import TransactionIn from "./tools/transactionIn";
+import TransactionOut from "./tools/transactionOut";
 import EventBus from "./common/EventBus";
-import Report from "./tools/Report";
+import Report from "./tools/report";
 
 const App: React.FC = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
