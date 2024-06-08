@@ -118,17 +118,15 @@ exports.getMoviment = async (req, res) => {
                 attributes: ['name']
             });
 
-            if(transactions[i].standId !== 100) {
-                const stand = await Stand.findOne({
-                    where: {
-                        id: transactions[i].standId
-                    },
-                    attributes: ['name']
-                });
-                origin = stand.name;
-            }else{
-                origin = 'Compra / Doação';
-            }
+            
+            const stand = await Stand.findOne({
+                where: {
+                    id: transactions[i].standId
+                },
+                attributes: ['name']
+            });
+            origin = stand.name;
+            
 
             if(dataReturn.filter(e => e.label === product.name).length > 0) {
                 const index = dataReturn.findIndex(e => e.label === product.name);
