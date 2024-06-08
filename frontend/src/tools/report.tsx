@@ -1,5 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { getStandProduct, getStockAlert } from "../services/report.service";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  getEntry,
+  getStandProduct,
+  getStockAlert,
+} from "../services/report.service";
 import { getStandList } from "../services/product.service";
 
 // @ts-ignore
@@ -13,6 +17,23 @@ const Report: React.FC = () => {
   const [standList, setStandList] = useState<any[]>([]);
   const [standProduct, setStandProduct] = useState<any[]>([]);
   const [stockAlert, setStokAlert] = useState<any[]>([]);
+  const [reportName, setReportName] = useState<string>("");
+  const [productEntry, setProductEntry] = useState<any[]>([]);
+  const [productOut, setProductOut] = useState<any[]>([]);
+
+  const printRef = useRef<HTMLDivElement>(null);
+
+  const handlePrint = () => {
+    if (printRef.current) {
+      const printContents = printRef.current.innerHTML;
+      const originalContents = document.body.innerHTML;
+
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+      //window.location.reload(); // Recarregar a página para restaurar o conteúdo original
+    }
+  };
 
   useEffect(() => {
     if (standList.length === 0) {
@@ -38,7 +59,26 @@ const Report: React.FC = () => {
 
       fetchStok();
 
-      console.log("stockAlert", stockAlert);
+      const fetchProductEntry = async () => {
+        try {
+          const response = await getEntry("1", "IN");
+          setProductEntry(response.data);
+        } catch (error) {
+          console.error("Erro ao obter entrada de produtos", error);
+        }
+      };
+
+      const fetchProductOut = async () => {
+        try {
+          const response = await getEntry("1", "OUT");
+          setProductOut(response.data);
+        } catch (error) {
+          console.error("Erro ao obter entrada de produtos", error);
+        }
+      };
+
+      fetchProductEntry();
+      fetchProductOut();
     }
   });
 
@@ -72,51 +112,171 @@ const Report: React.FC = () => {
   return (
     <>
       <div className="container-fluid">
-        <div className="row">
-          <div className="col card">
-            <label className="card-header">
-              Produtos retirados por barraca
-            </label>
-            <div className="px-5 py-2">
-              <select
-                className="form-control col-6"
-                onChange={(e) => {
-                  setStandId(parseInt(e.target.value));
-                }}
-              >
-                {standList.map((stand) => (
-                  <option key={stand.id} value={stand.id}>
-                    {stand.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <CanvasJSChart options={options} className="" />
-          </div>
-          <div className="col card mx-2">
-            <label className="card-header">Produtos com estoque baixo</label>
-            <div className="px-5 py-2">
-              <table className="table table-striped">
-                <thead>
-                  <tr className="table-active">
-                    <th scope="col">Produto</th>
-                    <th scope="col">Estoque</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {stockAlert.map((product, index) => (
-                    <tr key={index}>
-                      <td>{product.name}</td>
-                      <td>{product.stock}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div className=""></div>
+        <h3>Selecione o relatório desejado</h3>
+        <div className="">
+          <button
+            className="btn btn-primary mx-2"
+            onClick={() => setReportName("standProduct")}
+          >
+            Produtos retirados por barraca
+          </button>
+          <button
+            className="btn btn-primary mx-2"
+            onClick={() => setReportName("stockAlert")}
+          >
+            Produtos com estoque baixo
+          </button>
+          <button
+            className="btn btn-primary mx-2"
+            onClick={() => setReportName("productEntry")}
+          >
+            Entrada e Saída de produtos
+          </button>
         </div>
       </div>
+      {reportName === "standProduct" && (
+        <>
+          <div>
+            <div className="col card">
+              <label className="card-header">
+                Produtos retirados por barraca
+              </label>
+              <div className="px-5 py-2">
+                <label className="form-label">Selecione umaa barraca</label>
+                <select
+                  className="form-control col-6"
+                  onChange={(e) => {
+                    setStandId(parseInt(e.target.value));
+                  }}
+                >
+                  {standList.map((stand) => (
+                    <option key={stand.id} value={stand.id}>
+                      {stand.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div ref={printRef} className="my-4">
+                <h5>Produtos retirados por barraca</h5>
+                <table className="table table-striped my-4">
+                  <thead>
+                    <tr className="table-active">
+                      <th scope="col">Produto</th>
+                      <th scope="col">Quantidade</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {standProduct.map((product, index) => (
+                      <tr key={index}>
+                        <td>{product.label}</td>
+                        <td>{product.y}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="my-8">
+                <CanvasJSChart options={options} className="" />
+              </div>
+              <div className="d-grid gap-2 col-2 my-4">
+                <button onClick={handlePrint} className="btn btn-secondary">Imprimir</button>
+              </div>
+              
+            </div>
+          </div>
+        </>
+      )}
+      {reportName === "stockAlert" && (
+        <>
+          <div className="col card mx-2">
+            <div ref={printRef}>
+              <label className="card-header">Produtos com estoque baixo</label>
+              <div className="px-5 py-2">
+                <table className="table table-striped">
+                  <thead>
+                    <tr className="table-active">
+                      <th scope="col">Produto</th>
+                      <th scope="col" className="text-center">Estoque</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {stockAlert.map((product, index) => (
+                      <tr key={index}>
+                        <td>{product.name}</td>
+                        <td className="text-center">{product.stock}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div className="d-grid gap-2 col-2 mb-4">
+              <button onClick={handlePrint} className="btn btn-secondary ">
+                Imprimir
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+      {reportName === "productEntry" && (
+        <>
+          <div className="col card mx-2">
+            <div ref={printRef}>
+              <div>
+                <label className="card-header">Entrada de produtos</label>
+                <div className="px-5 py-2">
+                  <table className="table table-striped">
+                    <thead>
+                      <tr className="table-active">
+                        <th scope="col">Produto</th>
+                        <th scope="col" className="text-center">Quantidade</th>
+                        <th scope="col" className="text-center">Data</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {productEntry.map((product, index) => (
+                        <tr key={index}>
+                          <td>{product.label}</td>
+                          <td className="text-center">{product.value}</td>
+                          <td className="text-center">{product.date}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div>
+                  <label className="card-header">Saída de produtos</label>
+                  <div className="px-5 py-2">
+                    <table className="table table-striped">
+                      <thead>
+                        <tr className="table-active">
+                          <th scope="col">Produto</th>
+                          <th scope="col" className="text-center">Quantidade</th>
+                          <th scope="col" className="text-center">Data</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {productOut.map((product, index) => (
+                          <tr key={index}>
+                            <td>{product.label}</td>
+                            <td className="text-center">{product.value}</td>
+                            <td className="text-center">{product.date}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="d-grid gap-2 col-2 mb-4">
+              <button onClick={handlePrint} className="btn btn-secondary ">
+                Imprimir
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 };

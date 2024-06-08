@@ -22,4 +22,9 @@ module.exports = function (app) {
         [authJwt.verifyToken, authJwt.isModerator],
         controller.getStockAlert
     )
+
+    app.get(
+        "/api/report/movement/:day/:type",
+        controller.getMoviment
+    )
 }

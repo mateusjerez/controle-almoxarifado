@@ -69,3 +69,76 @@ exports.getStockAlert = async (req, res) => {
         res.status(500).send({ message: error.message });
     }
 }
+let dataday = '';
+exports.getMoviment = async (req, res) => {
+    try {
+        let dataReturn = [];
+        
+        let dataDate = '';
+
+        switch (req.params.day) {
+            case '1':
+                dataday = '2024-06-08T04:00:00.000Z';
+                dataDate = '07/06/2024';
+                break;
+            case '2':
+                dataday = '2024-06-09T04:00:00.000Z';
+                dataDate = '08/06/2024';
+                break;
+            case '3':
+                dataday = '2024-06-10T04:00:00.000Z';
+                dataDate = '09/06/2024';
+                break;
+        }
+       
+        const transactions = await Transaction.findAll({
+            where: {
+            type: req.params.type,
+            createdAt: {
+                [Op.lt]: dataday
+            }
+            },
+            attributes: ['productId', 'quantity', 'createdAt', 'standId']
+        });
+
+        for (let i = 0; i < transactions.length; i++) {
+            let origin = '';
+
+            const product = await Product.findOne({
+                where: {
+                    id: transactions[i].productId
+                },
+                attributes: ['name']
+            });
+
+            if(transactions[i].standId) {
+                const stand = await Stand.findOne({
+                    where: {
+                        id: transactions[i].standId
+                    },
+                    attributes: ['name']
+                });
+                origin = stand.name;
+            }else{
+                origin = 'Compra / Doação';
+            }
+
+            if(dataReturn.filter(e => e.label === product.name).length > 0) {
+                const index = dataReturn.findIndex(e => e.label === product.name);
+                dataReturn[index].value += transactions[i].quantity;
+                continue;
+            }
+
+            dataReturn.push({
+                label: product.name,
+                value: transactions[i].quantity,
+                origin: origin,
+                date: dataDate,
+            });
+        }
+
+        return res.status(200).send(dataReturn);
+    }catch (error) {
+        res.status(500).send({ message: error.message + ' - ' + dataday });
+    }
+}

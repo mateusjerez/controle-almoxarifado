@@ -12,3 +12,7 @@ export const getStandProduct = (standId: number) => {
 export const getStockAlert = () => {
     return axios.get(API_URL + "stockalert", { headers: authHeader() })
 }
+
+export const getEntry = (day:string, type:string) => {
+    return axios.get(API_URL + "movement/" + day + "/" + type, { headers: authHeader() })
+}

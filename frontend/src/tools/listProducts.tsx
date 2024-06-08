@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import * as AuthService from "../services/auth.service";
 import { getProductList } from "../services/product.service";
+import { getEntry } from "../services/report.service";
 
 const ListProducts: React.FC = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
 
   const [producList, setProductList] = useState<any[]>([]);
+  const [productEntry, setProductEntry] = useState<any[]>([]);
+  const [productOut, setProductOut] = useState<any[]>([]);
 
   useEffect(() => {
     const user = AuthService.getCurrentUser();
@@ -24,6 +27,27 @@ const ListProducts: React.FC = () => {
     };
 
     fetchProductList();
+
+    const fetchProductEntry = async () => {
+      try {
+        const response = await getEntry("1", "IN");
+        setProductEntry(response.data);
+      } catch (error) {
+        console.error("Erro ao obter entrada de produtos", error);
+      }
+    };
+
+    const fetchProductOut = async () => {
+      try {
+        const response = await getEntry("1", "OUT");
+        setProductOut(response.data);
+      } catch (error) {
+        console.error("Erro ao obter entrada de produtos", error);
+      }
+    };
+
+    fetchProductEntry();
+    fetchProductOut();
   }, []);
 
   return (
@@ -85,20 +109,43 @@ const ListProducts: React.FC = () => {
               <thead>
                 <tr className="table-active">
                   <th scope="col">Produto</th>
-                  <th scope="col">Estoque</th>
+                  <th scope="col" className="text-center">Entrada Total</th>
+                  <th scope="col" className="text-center">Saída Total</th>
+                  <th scope="col" className="text-center">Estoque Atual</th>
                 </tr>
               </thead>
               <tbody>
                 {producList.map((product: any, index: number) => {
+                  let entryValue = 0;
+                  let outValue = 0;
+
+                  const entry = productEntry.find(
+                    (entry) => entry.label === product.name
+                  );
+
+                  if (entry) {
+                    entryValue = entry.value;
+                  }
+
+                  const out = productOut.find(
+                    (out) => out.label === product.name
+                  );
+
+                  if (out) {
+                    outValue = out.value;
+                  }
                   return (
                     <tr
-                      className={product.stock < 10 ? "text-danger" : ""}
+                      // className={product.stock < 10 ? "text-danger" : ""}
+                      className=""
                       key={index}
                     >
                       <td>{product.name}</td>
-                      <td className="">
+                      <td className="text-center">{entryValue}</td>
+                      <td className="text-center">{outValue}</td>
+                      <td className="text-center">
                         {product.stock}
-                        {product.stock < 10 ? (
+                        {/* {product.stock < 10 ? (
                           <span className="px-3">
                             <svg
                               width="20px"
@@ -138,7 +185,7 @@ const ListProducts: React.FC = () => {
                           </span>
                         ) : (
                           ""
-                        )}
+                        )} */}
                       </td>
                     </tr>
                   );
