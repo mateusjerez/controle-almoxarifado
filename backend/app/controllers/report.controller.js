@@ -118,7 +118,7 @@ exports.getMoviment = async (req, res) => {
                 attributes: ['name']
             });
 
-            if(transactions[i].standId) {
+            if(transactions[i].standId !== 100) {
                 const stand = await Stand.findOne({
                     where: {
                         id: transactions[i].standId
