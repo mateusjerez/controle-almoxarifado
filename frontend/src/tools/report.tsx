@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  getEntry,
+  getMovement,
   getStandProduct,
   getStockAlert,
 } from "../services/report.service";
@@ -61,7 +61,7 @@ const Report: React.FC = () => {
 
       const fetchProductEntry = async () => {
         try {
-          const response = await getEntry("1", "IN");
+          const response = await getMovement("1", "IN");
           setProductEntry(response.data);
         } catch (error) {
           console.error("Erro ao obter entrada de produtos", error);
@@ -70,7 +70,7 @@ const Report: React.FC = () => {
 
       const fetchProductOut = async () => {
         try {
-          const response = await getEntry("1", "OUT");
+          const response = await getMovement("1", "OUT");
           setProductOut(response.data);
         } catch (error) {
           console.error("Erro ao obter entrada de produtos", error);
@@ -130,7 +130,13 @@ const Report: React.FC = () => {
             className="btn btn-primary mx-2"
             onClick={() => setReportName("productEntry")}
           >
-            Entrada e Saída de produtos
+            Entrada de produtos
+          </button>
+          <button
+            className="btn btn-primary mx-2"
+            onClick={() => setReportName("productOut")}
+          >
+            Saída de produtos
           </button>
         </div>
       </div>
@@ -244,28 +250,41 @@ const Report: React.FC = () => {
                     </tbody>
                   </table>
                 </div>
-                <div>
-                  <label className="card-header">Saída de produtos</label>
-                  <div className="px-5 py-2">
-                    <table className="table table-striped">
-                      <thead>
-                        <tr className="table-active">
-                          <th scope="col">Produto</th>
-                          <th scope="col" className="text-center">Quantidade</th>
-                          <th scope="col" className="text-center">Data</th>
+              </div>
+            </div>
+            <div className="d-grid gap-2 col-2 mb-4">
+              <button onClick={handlePrint} className="btn btn-secondary ">
+                Imprimir
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+      {reportName === "productOut" && (
+        <>
+          <div className="col card mx-2">
+            <div ref={printRef}>
+              <div>
+                <label className="card-header">Saída de produtos</label>
+                <div className="px-5 py-2">
+                  <table className="table table-striped">
+                    <thead>
+                      <tr className="table-active">
+                        <th scope="col">Produto</th>
+                        <th scope="col" className="text-center">Quantidade</th>
+                        <th scope="col" className="text-center">Data</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {productOut.map((product, index) => (
+                        <tr key={index}>
+                          <td>{product.label}</td>
+                          <td className="text-center">{product.value}</td>
+                          <td className="text-center">{product.date}</td>
                         </tr>
-                      </thead>
-                      <tbody>
-                        {productOut.map((product, index) => (
-                          <tr key={index}>
-                            <td>{product.label}</td>
-                            <td className="text-center">{product.value}</td>
-                            <td className="text-center">{product.date}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>

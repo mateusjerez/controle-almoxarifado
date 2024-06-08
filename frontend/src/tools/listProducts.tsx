@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as AuthService from "../services/auth.service";
 import { getProductList } from "../services/product.service";
-import { getEntry } from "../services/report.service";
+import { getMovement } from "../services/report.service";
 
 const ListProducts: React.FC = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
@@ -30,7 +30,7 @@ const ListProducts: React.FC = () => {
 
     const fetchProductEntry = async () => {
       try {
-        const response = await getEntry("1", "IN");
+        const response = await getMovement("1", "IN");
         setProductEntry(response.data);
       } catch (error) {
         console.error("Erro ao obter entrada de produtos", error);
@@ -39,10 +39,10 @@ const ListProducts: React.FC = () => {
 
     const fetchProductOut = async () => {
       try {
-        const response = await getEntry("1", "OUT");
+        const response = await getMovement("1", "OUT");
         setProductOut(response.data);
       } catch (error) {
-        console.error("Erro ao obter entrada de produtos", error);
+        console.error("Erro ao obter saída de produtos", error);
       }
     };
 
