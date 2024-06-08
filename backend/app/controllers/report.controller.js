@@ -41,6 +41,11 @@ exports.standXProduct = async (req, res) => {
             }
         }
 
+        dataReturn.sort(function(a, b) {
+            return b.name - a.name;
+          }
+        );
+
         return res.status(200).send(dataReturn);
 
 
@@ -69,11 +74,13 @@ exports.getStockAlert = async (req, res) => {
         res.status(500).send({ message: error.message });
     }
 }
-let dataday = '';
+
+
+
 exports.getMoviment = async (req, res) => {
     try {
         let dataReturn = [];
-        
+        let dataday = '';
         let dataDate = '';
 
         switch (req.params.day) {
@@ -137,8 +144,13 @@ exports.getMoviment = async (req, res) => {
             });
         }
 
+        dataReturn.sort(function(a, b) {
+            return b.label - a.label;
+          }
+        );
+
         return res.status(200).send(dataReturn);
     }catch (error) {
-        res.status(500).send({ message: error.message + ' - ' + dataday });
+        res.status(500).send({ message: error.message});
     }
 }
