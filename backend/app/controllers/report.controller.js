@@ -101,9 +101,6 @@ exports.getMoviment = async (req, res) => {
         const transactions = await Transaction.findAll({
             where: {
             type: req.params.type,
-            createdAt: {
-                [Op.lt]: dataday
-            }
             },
             attributes: ['productId', 'quantity', 'createdAt', 'standId']
         });
