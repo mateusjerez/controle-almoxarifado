@@ -23,7 +23,7 @@ exports.standXProduct = async (req, res) => {
         for (let i = 0; i < operations.length; i++) {
             const product = await Product.findOne({
                 where: {
-                    id: operations[i].productId
+                    id: Number(operations[i].productId)
                 },
                 attributes: ['name']
             });
