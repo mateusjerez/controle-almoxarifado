@@ -25,6 +25,7 @@ module.exports = function (app) {
 
     app.get(
         "/api/report/movement/:day/:type",
+        [authJwt.verifyToken, authJwt.isModerator],
         controller.getMoviment
     )
 }
