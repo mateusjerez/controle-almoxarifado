@@ -28,4 +28,10 @@ module.exports = function (app) {
         [authJwt.verifyToken, authJwt.isModerator],
         controller.getMoviment
     )
+
+    app.get(
+        "/api/report/producttransaction/:productId",
+        [authJwt.verifyToken, authJwt.isModerator],
+        controller.productTransaction
+    )
 }

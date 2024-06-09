@@ -3,8 +3,9 @@ import {
   getMovement,
   getStandProduct,
   getStockAlert,
+  getTransactionProduct,
 } from "../services/report.service";
-import { getStandList } from "../services/product.service";
+import { getProductList, getStandList } from "../services/product.service";
 
 // @ts-ignore
 import CanvasJSReact from "@canvasjs/react-charts";
@@ -13,13 +14,16 @@ import CanvasJSReact from "@canvasjs/react-charts";
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 const Report: React.FC = () => {
+  const [productId, setProductId] = useState<number>(1);
   const [standId, setStandId] = useState<number>(9);
   const [standList, setStandList] = useState<any[]>([]);
+  const [productList, setProductList] = useState<any[]>([]);
   const [standProduct, setStandProduct] = useState<any[]>([]);
   const [stockAlert, setStokAlert] = useState<any[]>([]);
   const [reportName, setReportName] = useState<string>("");
   const [productEntry, setProductEntry] = useState<any[]>([]);
   const [productOut, setProductOut] = useState<any[]>([]);
+  const [transactionProduct, setTransactionProduct] = useState<any[]>([]);
 
   const printRef = useRef<HTMLDivElement>(null);
 
@@ -36,51 +40,16 @@ const Report: React.FC = () => {
   };
 
   useEffect(() => {
-    if (standList.length === 0) {
-      const fetchStandList = async () => {
-        try {
-          const response = await getStandList();
-          setStandList(response.data.standList);
-        } catch (error) {
-          console.error("Erro ao obter lista de barracas:", error);
-        }
-      };
-
-      fetchStandList();
-
-      const fetchStok = async () => {
-        try {
-          const response = await getStockAlert();
-          setStokAlert(response.data);
-        } catch (error) {
-          console.error("Erro ao obter barraca", error);
-        }
-      };
-
-      fetchStok();
-
-      const fetchProductEntry = async () => {
-        try {
-          const response = await getMovement("1", "IN");
-          setProductEntry(response.data);
-        } catch (error) {
-          console.error("Erro ao obter entrada de produtos", error);
-        }
-      };
-
-      const fetchProductOut = async () => {
-        try {
-          const response = await getMovement("1", "OUT");
-          setProductOut(response.data);
-        } catch (error) {
-          console.error("Erro ao obter entrada de produtos", error);
-        }
-      };
-
-      fetchProductEntry();
-      fetchProductOut();
-    }
-  });
+    const fetchTransactionProduct = async () => {
+      try {
+        const response = await getTransactionProduct(productId);
+        setTransactionProduct(response.data);
+      } catch (error) {
+        console.error("Erro ao obter produtos da barraca", error);
+      }
+    };
+    fetchTransactionProduct();
+  }, [productId]);
 
   useEffect(() => {
     const fetchStandProduct = async () => {
@@ -93,6 +62,68 @@ const Report: React.FC = () => {
     };
     fetchStandProduct();
   }, [standId]);
+
+  useEffect(() => {
+    if (standList.length === 0) {
+      const fetchStandList = async () => {
+        try {
+          const response = await getStandList();
+          setStandList(response.data.standList);
+        } catch (error) {
+          console.error("Erro ao obter lista de barracas:", error);
+        }
+      };
+
+      fetchStandList();
+    }
+
+    if (productList.length < 1) {
+      const fecthProductList = async () => {
+        try {
+          const response = await getProductList();
+          setProductList(response.data.productList);
+
+          console.log("Produtos response: ", response.data);
+          console.log("Produtos: ", productList);
+        } catch (error) {
+          console.error("Erro ao obter produtos", error);
+        }
+      };
+      fecthProductList();
+    }
+
+    const fetchStok = async () => {
+      try {
+        const response = await getStockAlert();
+        setStokAlert(response.data);
+      } catch (error) {
+        console.error("Erro ao obter barraca", error);
+      }
+    };
+
+    fetchStok();
+
+    const fetchProductEntry = async () => {
+      try {
+        const response = await getMovement("1", "IN");
+        setProductEntry(response.data);
+      } catch (error) {
+        console.error("Erro ao obter entrada de produtos", error);
+      }
+    };
+
+    const fetchProductOut = async () => {
+      try {
+        const response = await getMovement("1", "OUT");
+        setProductOut(response.data);
+      } catch (error) {
+        console.error("Erro ao obter entrada de produtos", error);
+      }
+    };
+
+    fetchProductEntry();
+    fetchProductOut();
+  }, [productList, standList]);
 
   const options = {
     animationEnabled: true,
@@ -111,32 +142,40 @@ const Report: React.FC = () => {
 
   return (
     <>
-      <div className="container-fluid">
+      <div className="container-fluid card">
         <h3>Selecione o relatório desejado</h3>
-        <div className="">
+        <div className="my-4">
           <button
-            className="btn btn-primary mx-2"
+            className="btn btn-primary mx-2 btn-lg"
             onClick={() => setReportName("standProduct")}
           >
             Produtos retirados por barraca
           </button>
           <button
-            className="btn btn-primary mx-2"
+            className="btn btn-primary mx-2 btn-lg"
             onClick={() => setReportName("stockAlert")}
           >
             Produtos com estoque baixo
           </button>
           <button
-            className="btn btn-primary mx-2"
+            className="btn btn-primary mx-2 btn-lg"
             onClick={() => setReportName("productEntry")}
           >
             Entrada de produtos
           </button>
           <button
-            className="btn btn-primary mx-2"
+            className="btn btn-primary mx-2 btn-lg"
             onClick={() => setReportName("productOut")}
           >
             Saída de produtos
+          </button>
+        </div>
+        <div className="my-4">
+          <button
+            className="btn btn-primary mx-2 btn-lg"
+            onClick={() => setReportName("transactionProduct")}
+          >
+            Movimento por produto
           </button>
         </div>
       </div>
@@ -185,9 +224,10 @@ const Report: React.FC = () => {
                 <CanvasJSChart options={options} className="" />
               </div>
               <div className="d-grid gap-2 col-2 my-4">
-                <button onClick={handlePrint} className="btn btn-secondary">Imprimir</button>
+                <button onClick={handlePrint} className="btn btn-secondary">
+                  Imprimir
+                </button>
               </div>
-              
             </div>
           </div>
         </>
@@ -202,7 +242,9 @@ const Report: React.FC = () => {
                   <thead>
                     <tr className="table-active">
                       <th scope="col">Produto</th>
-                      <th scope="col" className="text-center">Estoque</th>
+                      <th scope="col" className="text-center">
+                        Estoque
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -235,8 +277,12 @@ const Report: React.FC = () => {
                     <thead>
                       <tr className="table-active">
                         <th scope="col">Produto</th>
-                        <th scope="col" className="text-center">Quantidade</th>
-                        <th scope="col" className="text-center">Data</th>
+                        <th scope="col" className="text-center">
+                          Quantidade
+                        </th>
+                        <th scope="col" className="text-center">
+                          Data
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -271,8 +317,12 @@ const Report: React.FC = () => {
                     <thead>
                       <tr className="table-active">
                         <th scope="col">Produto</th>
-                        <th scope="col" className="text-center">Quantidade</th>
-                        <th scope="col" className="text-center">Data</th>
+                        <th scope="col" className="text-center">
+                          Quantidade
+                        </th>
+                        <th scope="col" className="text-center">
+                          Data
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -292,6 +342,58 @@ const Report: React.FC = () => {
               <button onClick={handlePrint} className="btn btn-secondary ">
                 Imprimir
               </button>
+            </div>
+          </div>
+        </>
+      )}
+      {reportName === "transactionProduct" && (
+        <>
+          <div>
+            <div className="col card">
+              <h3 className="card-header">Movimento por produto</h3>
+              <div className="px-5 py-2">
+                <label className="form-label">Selecione um produto</label>
+                <select
+                  className="form-control col-6"
+                  onChange={(e) => {
+                    setProductId(parseInt(e.target.value));
+                  }}
+                >
+                  {productList.map((product) => (
+                    <option key={product.id} value={product.id}>
+                      {product.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div ref={printRef} className="my-4">
+                
+                <table className="table table-striped my-4">
+                  <thead>
+                    <tr className="table-active">
+                      <th scope="col">Data</th>
+                      <th scope="col" className="text-center">Tipo</th>
+                      <th scope="col" className="text-center">Quantidade</th>
+                      <th scope="col" className="text-center">Origem (Entrada) / Destino (Saída)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {transactionProduct.map((product, index) => (
+                      <tr key={index} className={product.type === "IN"? "text-primary" : "text-danger"}>
+                        <td>{product.date}</td>
+                        <td className="text-center">{product.type === "IN" ? <>Entrada</> : <>Saída</>}</td>
+                        <td className="text-center">{product.quantity}</td>
+                        <td className="text-center">{product.stand}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="d-grid gap-2 col-2 my-4">
+                <button onClick={handlePrint} className="btn btn-secondary">
+                  Imprimir
+                </button>
+              </div>
             </div>
           </div>
         </>

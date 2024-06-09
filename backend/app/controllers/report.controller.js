@@ -82,21 +82,9 @@ exports.getMoviment = async (req, res) => {
         let dataReturn = [];
         let dataday = '';
         let dataDate = '';
+        const dataday1 = '2024-06-08T04:00:00.000Z';
+        const dataday2 = '2024-06-09T04:00:00.000Z';
 
-        switch (req.params.day) {
-            case '1':
-                dataday = '2024-06-08T04:00:00.000Z';
-                dataDate = '07/06/2024';
-                break;
-            case '2':
-                dataday = '2024-06-09T04:00:00.000Z';
-                dataDate = '08/06/2024';
-                break;
-            case '3':
-                dataday = '2024-06-10T04:00:00.000Z';
-                dataDate = '09/06/2024';
-                break;
-        }
        
         const transactions = await Transaction.findAll({
             where: {
@@ -123,6 +111,11 @@ exports.getMoviment = async (req, res) => {
                 attributes: ['name']
             });
             origin = stand.name;
+
+            if( transactions[i].createdAt < dataday1) dataDate = '07/06/2024';
+            if( transactions[i].createdAt < dataday2 && transactions[i].createdAt > dataday1) dataDate = '08/06/2024';
+            if( transactions[i].createdAt > dataday2) dataDate = '09/06/2024';
+                
             
 
             if(dataReturn.filter(e => e.label === product.name).length > 0) {
@@ -147,5 +140,50 @@ exports.getMoviment = async (req, res) => {
         return res.status(200).send(dataReturn);
     }catch (error) {
         res.status(500).send({ message: error.message});
+    }
+}
+
+exports.productTransaction = async (req, res) => {
+    try {
+        const productId = req.params.productId;
+
+        const transactions = await Transaction.findAll({
+            where: {
+                productId: productId
+            },
+            attributes: ['type', 'quantity', 'standId', 'createdAt']
+        });
+
+        let dataReturn = [];
+
+        for (let i = 0; i < transactions.length; i++) {
+
+            const product = await Product.findOne({
+                where: {
+                    id: productId
+                },
+                attributes: ['name']
+            });
+
+            const stand = await Stand.findOne({
+                where: {
+                    id: transactions[i].standId
+                },
+                attributes: ['name']
+            });
+
+            dataReturn.push({
+                name: product.name,
+                stand: stand.name,
+                type: transactions[i].type,
+                quantity: transactions[i].quantity,
+                date: transactions[i].createdAt.getDate() + '/' + (transactions[i].createdAt.getMonth() + 1) + '/' + transactions[i].createdAt.getFullYear(),
+            })
+        };
+
+        return res.status(200).send(dataReturn);
+        
+    }catch{
+        res.status(500).send({ message: "Erro ao buscar transações do produto"});
     }
 }
