@@ -146,37 +146,37 @@ const Report: React.FC = () => {
         <h3>Selecione o relatório desejado</h3>
         <div className="my-4">
         <button
-            style={{ width: "350px", height: "50px"}}
-            className="btn btn-primary m-2 btn-lg"
+            style={{ width: "350px", height: "40px"}}
+            className="btn btn-primary m-2"
             onClick={() => setReportName("standProduct")}
           >
             Produtos retirados por barraca
           </button>
           <button
-            style={{ width: "350px", height: "50px"}}
-            className="btn btn-primary m-2 btn-lg"
+            style={{ width: "350px", height: "40px"}}
+            className="btn btn-primary m-2"
             onClick={() => setReportName("stockAlert")}
           >
             Produtos com estoque baixo
           </button>
           <button
-            style={{ width: "350px", height: "50px"}}
-            className="btn btn-primary m-2 btn-lg"
+            style={{ width: "350px", height: "40px"}}
+            className="btn btn-primary m-2"
             onClick={() => setReportName("productEntry")}
           >
             Entrada de produtos
           </button>
           <button
-            style={{ width: "350px", height: "50px"}}
-            className="btn btn-primary m-2 btn-lg"
+            style={{ width: "350px", height: "40px"}}
+            className="btn btn-primary m-2"
             onClick={() => setReportName("productOut")}
           >
             Saída de produtos
           </button>
 
           <button
-            style={{ width: "350px", height: "50px"}}
-            className="btn btn-primary m-2 btn-lg"
+            style={{ width: "350px", height: "40px"}}
+            className="btn btn-primary m-2"
             onClick={() => setReportName("transactionProduct")}
           >
             Movimento por produto
