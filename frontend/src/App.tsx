@@ -14,6 +14,7 @@ import Profile from "./components/profile";
 import BoardUser from "./components/boardUser";
 import BoardModerator from "./components/boardModerator";
 import BoardAdmin from "./components/boardAdmin";
+import Bingo from "./components/bingo";
 import ListProducts from "./tools/listProducts";
 import AddProduct from "./tools/addProduct";
 import TransactionIn from "./tools/transactionIn";
@@ -419,6 +420,7 @@ const App: React.FC = () => {
             <Route path="/listproduct" element={<ListProducts />} />
             <Route path="/transactionin" element={<TransactionIn />} />
             <Route path="/transactionout" element={<TransactionOut />} />
+            <Route path="/bingo" element={<Bingo />} />
             <Route path="/report" element={<Report />} />
           </Routes>
         </div>
