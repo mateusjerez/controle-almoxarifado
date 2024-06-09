@@ -142,37 +142,41 @@ const Report: React.FC = () => {
 
   return (
     <>
-      <div className="container-fluid card">
+      <div className="d-flex justify-between card">
         <h3>Selecione o relatório desejado</h3>
         <div className="my-4">
-          <button
-            className="btn btn-primary mx-2 btn-lg"
+        <button
+            style={{ width: "350px", height: "50px"}}
+            className="btn btn-primary m-2 btn-lg"
             onClick={() => setReportName("standProduct")}
           >
             Produtos retirados por barraca
           </button>
           <button
-            className="btn btn-primary mx-2 btn-lg"
+            style={{ width: "350px", height: "50px"}}
+            className="btn btn-primary m-2 btn-lg"
             onClick={() => setReportName("stockAlert")}
           >
             Produtos com estoque baixo
           </button>
           <button
-            className="btn btn-primary mx-2 btn-lg"
+            style={{ width: "350px", height: "50px"}}
+            className="btn btn-primary m-2 btn-lg"
             onClick={() => setReportName("productEntry")}
           >
             Entrada de produtos
           </button>
           <button
-            className="btn btn-primary mx-2 btn-lg"
+            style={{ width: "350px", height: "50px"}}
+            className="btn btn-primary m-2 btn-lg"
             onClick={() => setReportName("productOut")}
           >
             Saída de produtos
           </button>
-        </div>
-        <div className="my-4">
+
           <button
-            className="btn btn-primary mx-2 btn-lg"
+            style={{ width: "350px", height: "50px"}}
+            className="btn btn-primary m-2 btn-lg"
             onClick={() => setReportName("transactionProduct")}
           >
             Movimento por produto
@@ -367,21 +371,33 @@ const Report: React.FC = () => {
                 </select>
               </div>
               <div ref={printRef} className="my-4">
-                
                 <table className="table table-striped my-4">
                   <thead>
                     <tr className="table-active">
                       <th scope="col">Data</th>
-                      <th scope="col" className="text-center">Tipo</th>
-                      <th scope="col" className="text-center">Quantidade</th>
-                      <th scope="col" className="text-center">Origem (Entrada) / Destino (Saída)</th>
+                      <th scope="col" className="text-center">
+                        Tipo
+                      </th>
+                      <th scope="col" className="text-center">
+                        Quantidade
+                      </th>
+                      <th scope="col" className="text-center">
+                        Origem (Entrada) / Destino (Saída)
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {transactionProduct.map((product, index) => (
-                      <tr key={index} className={product.type === "IN"? "text-primary" : "text-danger"}>
+                      <tr
+                        key={index}
+                        className={
+                          product.type === "IN" ? "text-primary" : "text-danger"
+                        }
+                      >
                         <td>{product.date}</td>
-                        <td className="text-center">{product.type === "IN" ? <>Entrada</> : <>Saída</>}</td>
+                        <td className="text-center">
+                          {product.type === "IN" ? <>Entrada</> : <>Saída</>}
+                        </td>
                         <td className="text-center">{product.quantity}</td>
                         <td className="text-center">{product.stand}</td>
                       </tr>
