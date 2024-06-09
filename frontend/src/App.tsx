@@ -52,6 +52,11 @@ const App: React.FC = () => {
 
   return (
     <div className="container-fluid">
+      <div className="grid col-gap-4">
+        <Routes>
+        <Route path="/bingo" element={<Bingo />} />
+        </Routes>
+        </div>
       <div className="row">
         <div className="max-w-25 shadow-lg">
           <nav className="navbar w-100 navbar-dark bg-primary d-md-block bg-gradient vh-100 h-100">
@@ -420,10 +425,11 @@ const App: React.FC = () => {
             <Route path="/listproduct" element={<ListProducts />} />
             <Route path="/transactionin" element={<TransactionIn />} />
             <Route path="/transactionout" element={<TransactionOut />} />
-            <Route path="/bingo" element={<Bingo />} />
+            
             <Route path="/report" element={<Report />} />
           </Routes>
         </div>
+        
       </div>
     </div>
   );
