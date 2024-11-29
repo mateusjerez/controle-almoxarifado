@@ -1,26 +1,23 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { Routes, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useEffect, useState } from "react";
+import { Link, Route, Routes } from "react-router-dom";
 import "./App.css";
 
 import * as AuthService from "./services/auth.service";
 import IUser from "./types/user.type";
 
-import Login from "./components/login";
-import Register from "./components/register";
-import Home from "./tools/listProducts";
-import Profile from "./components/profile";
-import BoardUser from "./components/boardUser";
-import BoardModerator from "./components/boardModerator";
+import EventBus from "./common/EventBus";
 import BoardAdmin from "./components/boardAdmin";
-import Bingo from "./components/bingo";
-import ListProducts from "./tools/listProducts";
+import BoardModerator from "./components/boardModerator";
+import BoardUser from "./components/boardUser";
+import Login from "./components/login";
+import Profile from "./components/profile";
+import Register from "./components/register";
 import AddProduct from "./tools/addProduct";
+import { default as Home, default as ListProducts } from "./tools/listProducts";
+import Report from "./tools/report";
 import TransactionIn from "./tools/transactionIn";
 import TransactionOut from "./tools/transactionOut";
-import EventBus from "./common/EventBus";
-import Report from "./tools/report";
 
 const App: React.FC = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
@@ -52,11 +49,6 @@ const App: React.FC = () => {
 
   return (
     <div className="container-fluid">
-      <div className="grid col-gap-4">
-        <Routes>
-        <Route path="/bingo" element={<Bingo />} />
-        </Routes>
-        </div>
       <div className="row">
         <div className="max-w-25 shadow-lg">
           <nav className="navbar w-100 navbar-dark bg-primary d-md-block bg-gradient vh-100 h-100">
