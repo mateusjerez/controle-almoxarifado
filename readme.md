@@ -27,7 +27,7 @@ Este é um sistema de controle de almoxarifado desenvolvido em **TypeScript**, c
 ### Frontend
 - **React**: Biblioteca para construção de interfaces de usuário.
 - **Axios**: Para requisições HTTP.
-- **Tailwind CSS** (opcional): Estilização moderna e flexível.
+- **Tailwind CSS**: Estilização moderna e flexível.
 - **TypeScript**: Para um frontend tipado.
 
 ---
